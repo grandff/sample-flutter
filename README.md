@@ -33,3 +33,6 @@ Dart, Flutter 설치
 
 ### 3.1 Developer Tools
 - debug에서 Wiget Inspect 모드에서 레이아웃을 조절할 수 있음
+
+### 3.2 Buttons Section
+- 중간의 Total Balance 작업 시작

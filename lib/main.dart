@@ -16,6 +16,7 @@ class App extends StatelessWidget{  // core 위젯 중 하나를 상속받음
             horizontal: 40
           ),  
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start, // Total Balacne 쪽은 왼쪽정렬로 처리 
             children: [
               SizedBox( // 말그대로 사이즈가 있는 박스.. div같은
                 height: 80,
@@ -40,6 +41,49 @@ class App extends StatelessWidget{  // core 위젯 중 하나를 상속받음
                       ),
                     ),
                   ],)
+                ],
+              ),
+              SizedBox(
+                height: 120,
+              ),
+              Text(
+                'Total Balance',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.8),
+                  fontSize: 22,
+                ),
+              ),     
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                '\$5 194 482',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 48,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(45), // border radius 효과 추가
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50), 
+                      child: Text(
+                        'Transfer',
+                        style: TextStyle(
+                          fontSize: 22,
+                        ),
+                      ),
+                    )
+                  )
                 ],
               )
             ],
