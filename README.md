@@ -30,3 +30,6 @@ Dart, Flutter 설치
 - 디자인을 직접 구현 (http://dribbble.com/shots/19858341-Finnancial-Mobile-IOS-App)
 - appBar 삭제하기
   - appBar의 속성을 보면 ?가 붙어있음.. 필수가 아니란 뜻
+
+### 3.1 Developer Tools
+- debug에서 Wiget Inspect 모드에서 레이아웃을 조절할 수 있음
