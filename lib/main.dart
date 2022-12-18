@@ -10,15 +10,15 @@ class App extends StatelessWidget{  // core 위젯 중 하나를 상속받음
     // 메인 테마 설정
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color(0xFF181818),   // 커스텀배경색지정. 0xFF 로 시작
+        backgroundColor: const Color(0xFF181818),   // 커스텀배경색지정. 0xFF 로 시작
         body: Padding(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: 40
           ),  
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start, // Total Balacne 쪽은 왼쪽정렬로 처리 
             children: [
-              SizedBox( // 말그대로 사이즈가 있는 박스.. div같은
+              const SizedBox( // 말그대로 사이즈가 있는 박스.. div같은
                 height: 80,
               ),
               Row(
@@ -27,7 +27,7 @@ class App extends StatelessWidget{  // core 위젯 중 하나를 상속받음
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end, // 텍스트의 끝으로 정렬. 이 옵션을 안주면 두번쨰의 Welcome back 정렬이 이상해짐
                     children: [
-                    Text('Hey, Selena',
+                    const Text('Hey, Selena',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 28,
@@ -43,7 +43,7 @@ class App extends StatelessWidget{  // core 위젯 중 하나를 상속받음
                   ],)
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 120,
               ),
               Text(
@@ -53,10 +53,10 @@ class App extends StatelessWidget{  // core 위젯 중 하나를 상속받음
                   fontSize: 22,
                 ),
               ),     
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-              Text(
+              const Text(
                 '\$5 194 482',
                 style: TextStyle(
                   color: Colors.white,
@@ -64,7 +64,7 @@ class App extends StatelessWidget{  // core 위젯 중 하나를 상속받음
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Row(
@@ -74,7 +74,7 @@ class App extends StatelessWidget{  // core 위젯 중 하나를 상속받음
                       color: Colors.amber,
                       borderRadius: BorderRadius.circular(45), // border radius 효과 추가
                     ),
-                    child: Padding(
+                    child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50), 
                       child: Text(
                         'Transfer',
