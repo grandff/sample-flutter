@@ -66,3 +66,19 @@ Dart, Flutter 설치
 - 코드 리팩토링 기능
 - 왼쪽의 전구를 클릭해서 Widget 감싸기를 자동으로 처리 가능
 - 단축키는 Control + .
+
+### 3.5 Resuable Widgets
+
+- 추가 설정 하기
+- 코드 저장할때마다 자동 포멧팅해주는거
+- Error Lens도 설치하기
+
+```json
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+```
+
+- 버튼을 재사용할 수 있도록 별도 위젯 추가하기
+- Code Actions의 Extract를 사용할 수 있지만 여기서는 익숙해질때까지 사용하진 않을거임
+- lib/widgets/buttons.dart 추가(소문자로)
+- 속성만 추가해서 재사용이 가능한 버튼으로 만들기
