@@ -60,3 +60,9 @@ Dart, Flutter 설치
   },
   "dart.previewFlutterUiGuides": true,  // 소스코드 내에서 어떤 부모 객체에 들어간 요소인지 나오게 됨
 ```
+
+### 3.4 Code Actions
+
+- 코드 리팩토링 기능
+- 왼쪽의 전구를 클릭해서 Widget 감싸기를 자동으로 처리 가능
+- 단축키는 Control + .
