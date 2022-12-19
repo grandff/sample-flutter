@@ -82,3 +82,8 @@ Dart, Flutter 설치
 - Code Actions의 Extract를 사용할 수 있지만 여기서는 익숙해질때까지 사용하진 않을거임
 - lib/widgets/buttons.dart 추가(소문자로)
 - 속성만 추가해서 재사용이 가능한 버튼으로 만들기
+
+### 3.6 Card
+
+- 샘플 디자인의 카드 아이콘 생성
+- Row의 main과 cross 축은 각각 가로, 세로임. Column은 그 반대.
