@@ -92,3 +92,11 @@ Dart, Flutter 설치
 
 - 카드에 아이콘 추가하기
 - 디자인 예시처럼 overflow가 되기 위해 Transform과 clipBehavior 사용
+
+### 3.8 Reusable Cards
+
+- 카드 디자인 재활용을 위해 위젯 생성(currency_card.dart)
+- 여러 카드를 추가했을 경우 overflow 즉 화면레이아웃을 넘겨버려서 별도 처리가 필요함
+- 유저로 하여금 스크롤링이 가능하도록 처리해줘야함
+- 위치는 body 분에서 Padding을 사용하기전에 스크롤 추가
+- 마무리로 Transform.translate로 카드 포개기
