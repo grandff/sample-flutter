@@ -113,6 +113,7 @@ class App extends StatelessWidget {
               ),
               // 카드만들기
               Container(
+                  clipBehavior: Clip.hardEdge, // overflow hidden 같은 거임.. 아마도.
                   decoration: BoxDecoration(
                     color: const Color(0xFF1F2123),
                     borderRadius: BorderRadius.circular(25),
@@ -120,6 +121,7 @@ class App extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(30),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,9 +149,22 @@ class App extends StatelessWidget {
                                       fontSize: 20,
                                     )),
                               ],
-                            )
+                            ),
                           ],
-                        )
+                        ),
+                        Transform.scale(
+                          // 아이콘 크기 변경
+                          scale: 2.2,
+                          child: Transform.translate(
+                            // 아이콘 위치 변경
+                            offset: const Offset(-5, 12),
+                            child: const Icon(
+                              Icons.euro_rounded,
+                              color: Colors.white,
+                              size: 88,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   )),

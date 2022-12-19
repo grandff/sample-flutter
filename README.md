@@ -87,3 +87,8 @@ Dart, Flutter 설치
 
 - 샘플 디자인의 카드 아이콘 생성
 - Row의 main과 cross 축은 각각 가로, 세로임. Column은 그 반대.
+
+### 3.7 Icons and Transforms
+
+- 카드에 아이콘 추가하기
+- 디자인 예시처럼 overflow가 되기 위해 Transform과 clipBehavior 사용
