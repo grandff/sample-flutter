@@ -109,3 +109,7 @@ Dart, Flutter 설치
 ### 4.0 State
 
 - 데이터가 변경되면서 반영되는 실시간 위젯이 StateFullWidget
+
+### 4.1 setState
+
+- 상태를 변경하고 setState를 통해서 플러터를 다시 빌드 시킴
