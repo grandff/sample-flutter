@@ -105,3 +105,7 @@ Dart, Flutter 설치
 
 - Transform.translate와 Offset까지 widget으로 처리해보기
 - order라는 새로운 프로퍼티를 추가해서 offset 제어해보기
+
+### 4.0 State
+
+- 데이터가 변경되면서 반영되는 실시간 위젯이 StateFullWidget
