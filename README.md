@@ -100,3 +100,8 @@ Dart, Flutter 설치
 - 유저로 하여금 스크롤링이 가능하도록 처리해줘야함
 - 위치는 body 분에서 Padding을 사용하기전에 스크롤 추가
 - 마무리로 Transform.translate로 카드 포개기
+
+### 3.9 Code Challenge
+
+- Transform.translate와 Offset까지 widget으로 처리해보기
+- order라는 새로운 프로퍼티를 추가해서 offset 제어해보기
