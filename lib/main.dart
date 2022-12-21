@@ -23,26 +23,42 @@ class _App extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // 테마지정
+      theme: ThemeData(
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            color: Colors.red,
+          ),
+        ),
+      ),
       home: Scaffold(
         backgroundColor: const Color(0xFFF4EDDB),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Click Count', style: TextStyle(fontSize: 30)),
-              Text('$counter', style: const TextStyle(fontSize: 30)),
-              // 버튼 추가
-              IconButton(
-                onPressed: onClicked,
-                icon: const Icon(
-                  Icons.add_box_rounded,
-                ),
-                iconSize: 40,
-              )
+            children: const [
+              MyLargeTitle(),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class MyLargeTitle extends StatelessWidget {
+  const MyLargeTitle({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'My Large Title',
+      style: TextStyle(
+          fontSize: 30,
+          color: Theme.of(context).textTheme.titleLarge?.color // theme 속성에 접근
+          ),
     );
   }
 }
