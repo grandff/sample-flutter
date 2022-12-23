@@ -11,11 +11,12 @@ Dart, Flutter 설치
 ## To-Do list
 
 [ ] Dribble 보고 똑같이 .. 만들어보기
+  > <https://dribbble.com/shots/20166390--29-Mobile-App-Concept>
 
 ## References
 
-[명명 규칙](https://dart.dev/tools/pub/pubspec#name) </br>
-[빌드에러대응](https://hijigoo.github.io/flutter/2021/05/05/error-tip-01/) <br/>
+[명명 규칙]<https://dart.dev/tools/pub/pubspec#name> </br>
+[빌드에러대응]<https://hijigoo.github.io/flutter/2021/05/05/error-tip-01/>
 
 ## 강의내용 정리
 
