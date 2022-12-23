@@ -12,9 +12,10 @@ Dart, Flutter 설치
 
 [ ] Dribble 보고 똑같이 .. 만들어보기
 
-## 프로젝트 명령어 참조
+## References
 
 [명명 규칙](https://dart.dev/tools/pub/pubspec#name) </br>
+[빌드에러대응](https://hijigoo.github.io/flutter/2021/05/05/error-tip-01/) <br/>
 
 ## 강의내용 정리
 
@@ -127,3 +128,13 @@ Dart, Flutter 설치
 - 빌드를 하기전에 데이터를 받아와야할때.. 등등 선택해서 사용
 - dispose는 위젯이 스크린에서 제거될때 호출되는 메서드임
 - 위젯 트리에서 제거되기 전에 무언가 취소할떄 사용
+
+### 5.0 User Interface
+
+> 참고디자인[https://www.behance.net/gallery/98918603/POMO-UIKIT?tracking_source=search_projects%7Cpomo+uikit]
+
+- 뽀모도로앱 만드는거 실습 시작
+- StatelessWidget으로 만들고 screens폴더 생성
+- home_screen.dart 생성
+- home_screen에는 Flexible 위젯 사용. UI를 비율에 기반하여 더 유연하게 만들어줌.
+  - flex 속성을 통해 위젯별로 차지하는 비율 설정

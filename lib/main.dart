@@ -1,64 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:sample_flutter/screens/home_screen.dart';
 
 void main() {
   runApp(const App());
 }
 
-class App extends StatefulWidget {
+class App extends StatelessWidget {
   const App({super.key});
-
-  @override
-  State<App> createState() => _App();
-}
-
-class _App extends State<App> {
-  int counter = 0;
-
-  void onClicked() {
-    setState(() {
-      counter = counter + 1;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // 테마지정
       theme: ThemeData(
+        backgroundColor: const Color(0xFFE7626C),
         textTheme: const TextTheme(
-          titleLarge: TextStyle(
-            color: Colors.red,
+          headline1: TextStyle(
+            color: Color(0xFF232B55),
           ),
         ),
+        cardColor: const Color(0xFFF4EDDB),
       ),
-      home: Scaffold(
-        backgroundColor: const Color(0xFFF4EDDB),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              MyLargeTitle(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class MyLargeTitle extends StatelessWidget {
-  const MyLargeTitle({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      'My Large Title',
-      style: TextStyle(
-          fontSize: 30,
-          color: Theme.of(context).textTheme.titleLarge?.color // theme 속성에 접근
-          ),
+      home: const HomeScreen(),
     );
   }
 }
