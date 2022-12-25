@@ -11,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int totalSeconds = 1500; // 25분을 초로 변경
+  bool isRunning = false;
   late Timer timer; // 사용자가 버튼을 누를떄만 타이머가 생성되게 할거임
 
   // 1초마다 홈스크린의 setState를 변경해주는 함수
@@ -23,7 +24,22 @@ class _HomeScreenState extends State<HomeScreen> {
   // 버튼 클릭 시 타이머 시작
   void onStartPressed() {
     timer = Timer.periodic(
-        const Duration(seconds: 1), onTick); // dart에 내장되어있는 Timer 함수 사용
+      const Duration(seconds: 1),
+      onTick,
+    ); // dart에 내장되어있는 Timer 함수 사용
+
+    setState(() {
+      isRunning = true;
+    });
+  }
+
+  // 타이머를 멈추는 역할
+  void onPausePressed() {
+    timer.cancel();
+
+    setState(() {
+      isRunning = false;
+    });
   }
 
   @override
@@ -53,8 +69,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: IconButton(
                 color: Theme.of(context).cardColor,
                 iconSize: 120,
-                icon: const Icon(Icons.play_circle_outline),
-                onPressed: onStartPressed,
+                icon: Icon(isRunning
+                    ? Icons.pause_circle_outline
+                    : Icons.play_circle_outline),
+                onPressed: isRunning ? onPausePressed : onStartPressed,
               ),
             ),
           ),
