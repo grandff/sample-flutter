@@ -234,8 +234,90 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(),
-              Container(),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Created',
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.headline1!.color,
+                        fontSize:
+                            Theme.of(context).textTheme.headline1!.fontSize,
+                        fontWeight:
+                            Theme.of(context).textTheme.headline1!.fontWeight,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Dec 10, by Matt',
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.bodyText1!.color,
+                            fontSize:
+                                Theme.of(context).textTheme.bodyText1!.fontSize,
+                            fontWeight: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .fontWeight,
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 2),
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.black,
+                          ),
+                          child: const Icon(
+                            Icons.person_add,
+                            size: 15,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 2),
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.black,
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 2),
+                          borderRadius: BorderRadius.circular(100),
+                          color: Colors.white,
+                        ),
+                        padding: const EdgeInsets.all(15),
+                        child: const Icon(
+                          Icons.check,
+                          size: 20,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const Expanded(
+                        child: Text(
+                          'Set As Done',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ));
