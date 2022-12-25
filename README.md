@@ -139,3 +139,8 @@ Dart, Flutter 설치
 - home_screen.dart 생성
 - home_screen에는 Flexible 위젯 사용. UI를 비율에 기반하여 더 유연하게 만들어줌.
   - flex 속성을 통해 위젯별로 차지하는 비율 설정
+
+### 5.1 Timer
+
+- 타이머 기능 추가(거꾸로)
+- state를 카운트할 시간으로 초기화
