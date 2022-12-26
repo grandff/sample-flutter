@@ -10,8 +10,10 @@ Dart, Flutter 설치
 
 ## To-Do list
 
-[ ] Dribble 보고 똑같이 .. 만들어보기
+[X] Dribble 보고 똑같이 .. 디자인 연습 만들어보기
   > <https://dribbble.com/shots/20166390--29-Mobile-App-Concept>
+[ ] 뽀모도로 만든거 연습 해보기
+  > <https://www.behance.net/gallery/153414411/Timer>
 
 ## References
 
@@ -148,3 +150,9 @@ Dart, Flutter 설치
 ### 5.2 Pause Play
 
 - 타이머를 일시정지할 수 있는 기능 추가
+
+### 5.3 Date Format
+
+- 1500을 분:초 형태로 변경하기 위해 dart에 내장된 Duration 클래스 사용
+
+### 5.4 Code Challenge
