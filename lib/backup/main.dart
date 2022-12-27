@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sample_flutter/widgets/Buttons.dart';
-import 'package:sample_flutter/widgets/currency_card.dart';
+import 'package:sample_flutter/backup/widgets/Buttons.dart';
+import 'package:sample_flutter/backup/widgets/currency_card.dart';
 
 void main() {
   runApp(App());

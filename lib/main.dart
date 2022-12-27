@@ -6,21 +6,13 @@ void main() {
 }
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App(
+      {super.key}); // key를 stateless widget의 슈퍼클래스에 보내는거임. 식별자 역할을 한다고만 생각하면 됨.
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        backgroundColor: const Color(0xFFE7626C),
-        textTheme: const TextTheme(
-          headline1: TextStyle(
-            color: Color(0xFF232B55),
-          ),
-        ),
-        cardColor: const Color(0xFFF4EDDB),
-      ),
-      home: const HomeScreen(),
+    return const MaterialApp(
+      home: HomeScreen(),
     );
   }
 }

@@ -14,6 +14,7 @@ Dart, Flutter 설치
   > <https://dribbble.com/shots/20166390--29-Mobile-App-Concept>
 [ ] 뽀모도로 만든거 연습 해보기
   > <https://www.behance.net/gallery/153414411/Timer>
+  > <https://dribbble.com/shots/12024270-Countdown-Timer-DailyUI014>
 
 ## References
 
@@ -155,4 +156,6 @@ Dart, Flutter 설치
 
 - 1500을 분:초 형태로 변경하기 위해 dart에 내장된 Duration 클래스 사용
 
-### 5.4 Code Challenge
+### 6.1 App Bar
+
+-
