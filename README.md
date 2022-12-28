@@ -158,4 +158,8 @@ Dart, Flutter 설치
 
 ### 6.1 App Bar
 
--
+- App Bar 추가하기
+
+### 6.2 Data Fetching
+
+- http 패키지 설치(flutter pub add http)
