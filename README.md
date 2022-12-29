@@ -163,3 +163,7 @@ Dart, Flutter 설치
 ### 6.2 Data Fetching
 
 - http 패키지 설치(flutter pub add http)
+
+### 6.3 fromJson
+
+- 전달받은 데이터를 json 형식으로 변환
