@@ -167,3 +167,7 @@ Dart, Flutter 설치
 ### 6.3 fromJson
 
 - 전달받은 데이터를 json 형식으로 변환
+
+### 6.4 Recap
+
+### 6.5 waitForWebToons

@@ -15,10 +15,10 @@ class ApiService {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final List<dynamic> webtoons =
-          jsonDecode(response.body); // 응답형식을 json으로 디코딩
+      final webtoons = jsonDecode(response.body); // 응답형식을 json으로 디코딩
       for (var webtoon in webtoons) {
-        webtoonInstances.add(WebtoonModel.fromJson(webtoon));
+        final instance = WebtoonModel.fromJson(webtoon);
+        webtoonInstances.add(instance);
       }
       return webtoonInstances;
     }
