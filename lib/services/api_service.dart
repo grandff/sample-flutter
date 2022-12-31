@@ -4,10 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:sample_flutter/models/webtoon_model.dart';
 
 class ApiService {
-  final String baseUrl = "https://webtoon-crawler.nomadcoders.workers.dev";
-  final String today = "today";
+  static const String baseUrl =
+      "https://webtoon-crawler.nomadcoders.workers.dev";
+  static const String today = "today";
 
-  Future<List<WebtoonModel>> getTodaysToons() async {
+  static Future<List<WebtoonModel>> getTodaysToons() async {
     // async를 쓰기 때문에 future를 붙여야함
     List<WebtoonModel> webtoonInstances = [];
     // await 를 쓰기위해 async 선언

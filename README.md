@@ -171,3 +171,6 @@ Dart, Flutter 설치
 ### 6.4 Recap
 
 ### 6.5 waitForWebToons
+
+- static으로 변경
+- 플러터에서 데이터를 보여주는 방법은 두가지가 있음
