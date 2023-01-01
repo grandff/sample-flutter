@@ -12,9 +12,10 @@ Dart, Flutter 설치
 
 [X] Dribble 보고 똑같이 .. 디자인 연습 만들어보기
   > <https://dribbble.com/shots/20166390--29-Mobile-App-Concept>
-[ ] 뽀모도로 만든거 연습 해보기
+[ ] 뽀모도로 만든거 연습 해보기 (타이머앱)
   > <https://www.behance.net/gallery/153414411/Timer>
   > <https://dribbble.com/shots/12024270-Countdown-Timer-DailyUI014>
+[ ] 공공데이터 API로 데이터 fetch 연습
 
 ## References
 
@@ -174,3 +175,10 @@ Dart, Flutter 설치
 
 - static으로 변경
 - 플러터에서 데이터를 보여주는 방법은 두가지가 있음
+- 이번시간에 할거는 state를 통해서 설정
+
+### 6.6 FutureBuilder
+
+- 6.5에서 state를 썼지만 사실 쓰는걸 권장하지 않음
+- 이번에 할거는 statelessWidget인 상태에서 fetch할 수가 있음
+- futurebuilder를 통해서 데이터 fetch
