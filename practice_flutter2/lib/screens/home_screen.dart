@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,16 +10,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const oneMinutes = 60;
-  int totalSeconds = oneMinutes;
-  int totalPomodoros = 0;
+  static const threeMinutes = 6000;
+  int totalMilieSeconds = 0;
+  int totalCounts = 0;
   double totalProgress = 0.0;
   bool isRunning = false; // 현재 재생 중인지 일시정지상태인지
   late Timer timer;
 
   // 타이머 시작
   void onStart() {
-    timer = Timer.periodic(const Duration(seconds: 1), onTick);
+    timer = Timer.periodic(const Duration(milliseconds: 10), onTick);
 
     // isRunning -> true 타이머 시작 알림 처리
     setState(() {
@@ -31,26 +30,53 @@ class _HomeScreenState extends State<HomeScreen> {
   // 타이머 처리
   void onTick(Timer timer) {
     setState(() {
-      totalSeconds = totalSeconds - 1;
+      totalMilieSeconds = totalMilieSeconds + 1; // 시간 증가
+      totalProgress = (totalMilieSeconds / threeMinutes); // progress 증가
     });
+
+    if (totalMilieSeconds == threeMinutes) {
+      // 제한시간까지 온 경우 초기화하고 전체 횟수 증가
+      totalCounts = totalCounts + 1;
+      totalMilieSeconds = 0;
+      totalProgress = 0;
+      print("time out!!!");
+    }
   }
 
   // 타이머 초기화
-  void onStop() {}
+  void onStop() {
+    timer.cancel();
+
+    setState(() {
+      isRunning = false;
+      totalCounts = 0;
+      totalMilieSeconds = 0;
+      totalProgress = 0;
+      totalCounts = 0;
+    });
+  }
 
   // 타이머 일시정지
-  void onPause() {}
+  void onPause() {
+    timer.cancel();
+
+    setState(() {
+      isRunning = false;
+    });
+  }
 
   // 10초 추가
-  void addTenSeconds() {}
+  void addTenSeconds() {
+    totalMilieSeconds = totalMilieSeconds + 100;
+  }
 
   // 현재 시간 기록 후 다시 시작
   void addHistory() {}
 
   // 타이머 포맷
-  String format(int seconds) {
-    var duration = Duration(seconds: seconds);
-    return duration.toString();
+  String format(int milliseconds) {
+    var duration = Duration(milliseconds: milliseconds * 10);
+    return duration.toString().substring(2, 10);
   }
 
   @override
@@ -70,28 +96,34 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           Flexible(
-            flex: 2,
+            flex: 1,
             fit: FlexFit.loose,
-            child: Container(
-              // 이거 위젯으로 빼기
-              alignment: Alignment.bottomCenter,
-              child: CircularPercentIndicator(
-                animation: true,
-                radius: 140.0, // 이게 크기임..
-                lineWidth: 15,
-                percent: totalProgress,
-                center: Text(format(totalSeconds),
-                    style: const TextStyle(
-                      fontSize: 60,
-                    )),
-                backgroundColor: Colors.grey,
-                progressColor: Colors.orange,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  format(totalMilieSeconds),
+                  style: const TextStyle(
+                    fontSize: 55,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: LinearProgressIndicator(
+                    backgroundColor: Colors.grey,
+                    color: Colors.orange,
+                    value: totalProgress,
+                    minHeight: 20,
+                  ),
+                ),
+              ],
             ),
           ),
           Flexible(
             flex: 1,
-            fit: FlexFit.loose,
+            fit: FlexFit.tight,
             child: Container(
               alignment: Alignment.center,
               child: Row(
@@ -113,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     flex: 1,
                     fit: FlexFit.tight,
                     child: IconButton(
-                        onPressed: () {},
+                        onPressed: onStop,
                         icon: const Icon(
                           Icons.stop_circle_outlined,
                           size: 80,
@@ -128,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
             fit: FlexFit.tight,
             child: Container(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // 아래 버튼들 위젯으로 빼기
                   Container(
@@ -140,6 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.symmetric(vertical: 15),
                     alignment: Alignment.center,
                     child: const Text("10초 추가"),
                   ),
@@ -152,6 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.symmetric(vertical: 15),
                     alignment: Alignment.center,
                     child: const Text("기록하기"),
                   ),
@@ -159,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
-                      children: const [Text("전체 횟수 : "), Text("0")],
+                      children: [const Text("전체 횟수 : "), Text('$totalCounts')],
                     ),
                   )
                 ],
