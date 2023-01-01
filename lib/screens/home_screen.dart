@@ -5,7 +5,7 @@ import 'package:sample_flutter/services/api_service.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
-  Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
+  final Future<List<WebtoonModel>> webtoons = ApiService.getTodaysToons();
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +29,25 @@ class HomeScreen extends StatelessWidget {
         // future builder를 통해 데이터 fetch 구현
         future: webtoons, // 데이터 fetch 후 받아질 데이터 형태
         builder: (context, snapshot) {
+          // 데이터를 다 받아왔으면
           if (snapshot.hasData) {
-            // 데이터를 다 받아왔으면
-            return const Text("There is data!");
+            return ListView.separated(
+              scrollDirection: Axis.horizontal, // 스크롤방향
+              itemCount: snapshot.data!.length, // 몇개의 아이템을 빌드할건지
+              itemBuilder: (context, index) {
+                var webtoon = snapshot.data![index];
+                return Text(webtoon.title);
+              },
+              // item 마다 separator 추가
+              separatorBuilder: (context, index) => const SizedBox(
+                width: 20,
+              ),
+            );
           }
 
-          return const Text('Loading...');
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         },
       ),
     );

@@ -181,4 +181,9 @@ Dart, Flutter 설치
 
 - 6.5에서 state를 썼지만 사실 쓰는걸 권장하지 않음
 - 이번에 할거는 statelessWidget인 상태에서 fetch할 수가 있음
-- futurebuilder를 통해서 데이터 fetch
+- futurebuilder를 통해서 데이터 fetch 하기
+
+### 6.7 ListView
+
+- list 형태의 데이터를 표현하기 위해 listview 사용
+- ListView / ListView.builder / ListView.separated 사용
