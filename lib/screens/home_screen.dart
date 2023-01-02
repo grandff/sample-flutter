@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sample_flutter/models/webtoon_model.dart';
 import 'package:sample_flutter/services/api_service.dart';
+import 'package:sample_flutter/widgets/webtoon_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -59,34 +60,8 @@ class HomeScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         var webtoon = snapshot.data![index];
         // 카드 형태의 디자인
-        return Column(
-          children: [
-            Container(
-              width: 250,
-              clipBehavior:
-                  Clip.hardEdge, // border radius 적용을 위해 clip behavior 적용
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 15,
-                      offset: const Offset(10, 10),
-                      color: Colors.black.withOpacity(0.5),
-                    )
-                  ]),
-              child: Image.network(webtoon.thumb),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              webtoon.title,
-              style: const TextStyle(
-                fontSize: 22,
-              ),
-            )
-          ],
-        );
+        return Webtoon(
+            title: webtoon.title, thumb: webtoon.thumb, id: webtoon.id);
       },
       // item 마다 separator 추가
       separatorBuilder: (context, index) => const SizedBox(

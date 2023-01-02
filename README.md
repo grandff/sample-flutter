@@ -192,3 +192,8 @@ Dart, Flutter 설치
 
 - 빌더가 너무 많으므로 따로 추출하기(widget 위에서 해야 method 됨)
 - 카드 형태의 디자인 생성
+
+### 6.9 Detail Screen
+
+- 상세 페이지로 이동하는거 추가
+- 클릭을 감지하기 위해 GestureDetector 추가하기
