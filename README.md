@@ -187,3 +187,8 @@ Dart, Flutter 설치
 
 - list 형태의 데이터를 표현하기 위해 listview 사용
 - ListView / ListView.builder / ListView.separated 사용
+
+### 6.8 Webtoon Card
+
+- 빌더가 너무 많으므로 따로 추출하기(widget 위에서 해야 method 됨)
+- 카드 형태의 디자인 생성
