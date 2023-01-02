@@ -12,7 +12,7 @@ Dart, Flutter 설치
 
 [X] Dribble 보고 똑같이 .. 디자인 연습 만들어보기
   > <https://dribbble.com/shots/20166390--29-Mobile-App-Concept>
-[ ] 뽀모도로 만든거 연습 해보기 (타이머앱)
+[X] 뽀모도로 만든거 연습 해보기 (타이머앱)
   > <https://www.behance.net/gallery/153414411/Timer>
   > <https://dribbble.com/shots/12024270-Countdown-Timer-DailyUI014>
 [ ] 공공데이터 API로 데이터 fetch 연습
@@ -21,6 +21,7 @@ Dart, Flutter 설치
 
 [명명 규칙]<https://dart.dev/tools/pub/pubspec#name> </br>
 [빌드에러대응]<https://hijigoo.github.io/flutter/2021/05/05/error-tip-01/>
+[ListView]<https://dalgonakit.tistory.com/104> </br>
 
 ## 강의내용 정리
 

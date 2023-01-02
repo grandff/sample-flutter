@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   double totalProgress = 0.0;
   bool isRunning = false; // 현재 재생 중인지 일시정지상태인지
   late Timer timer;
+  List<String> historyList = [];
 
   // 타이머 시작
   void onStart() {
@@ -39,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
       totalCounts = totalCounts + 1;
       totalMilieSeconds = 0;
       totalProgress = 0;
-      print("time out!!!");
     }
   }
 
@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
       totalCounts = 0;
       totalMilieSeconds = 0;
       totalProgress = 0;
-      totalCounts = 0;
+      historyList = [];
     });
   }
 
@@ -65,13 +65,29 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // 10초 추가
+  // 5초 추가
   void addTenSeconds() {
-    totalMilieSeconds = totalMilieSeconds + 100;
+    totalMilieSeconds = totalMilieSeconds + 500;
+    if (totalMilieSeconds >= threeMinutes) {
+      totalMilieSeconds = 0;
+      totalProgress = 0;
+    }
+
+    setState(() {
+      totalCounts = totalCounts + 1;
+    });
   }
 
   // 현재 시간 기록 후 다시 시작
-  void addHistory() {}
+  void addHistory() {
+    historyList.add(format(totalMilieSeconds));
+    totalMilieSeconds = 0;
+    totalProgress = 0;
+
+    setState(() {
+      totalCounts = totalCounts + 1;
+    });
+  }
 
   // 타이머 포맷
   String format(int milliseconds) {
@@ -94,10 +110,10 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Flexible(
-            flex: 1,
-            fit: FlexFit.loose,
+          SizedBox(
+            height: 250,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -121,82 +137,98 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          Flexible(
-            flex: 1,
-            fit: FlexFit.tight,
-            child: Container(
-              alignment: Alignment.center,
+          SizedBox(
+            height: 120,
+            child: Center(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Flexible(
-                    flex: 1,
-                    fit: FlexFit.tight,
-                    child: IconButton(
-                        onPressed: !isRunning ? onStart : onPause,
-                        icon: Icon(
-                          !isRunning
-                              ? Icons.play_circle_outline_outlined
-                              : Icons.pause_circle_outline_outlined,
-                          size: 80,
-                        )),
+                  IconButton(
+                    onPressed: !isRunning ? onStart : onPause,
+                    iconSize: 80,
+                    icon: Icon(
+                      !isRunning
+                          ? Icons.play_circle_outline_outlined
+                          : Icons.pause_circle_outline_outlined,
+                    ),
                   ),
-                  Flexible(
-                    flex: 1,
-                    fit: FlexFit.tight,
-                    child: IconButton(
-                        onPressed: onStop,
-                        icon: const Icon(
-                          Icons.stop_circle_outlined,
-                          size: 80,
-                        )),
+                  const SizedBox(width: 50),
+                  IconButton(
+                    onPressed: onStop,
+                    iconSize: 80,
+                    icon: const Icon(
+                      Icons.stop_circle_outlined,
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          Flexible(
-            flex: 1,
-            fit: FlexFit.tight,
-            child: Container(
-              child: Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // 아래 버튼들 위젯으로 빼기
-                  Container(
-                    width: 180,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
+          Column(
+            children: [
+              // 아래 버튼들 위젯으로 빼기
+              GestureDetector(
+                onTap: addTenSeconds,
+                child: Container(
+                  width: 180,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 2,
                     ),
-                    padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.symmetric(vertical: 15),
-                    alignment: Alignment.center,
-                    child: const Text("10초 추가"),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  Container(
-                    width: 180,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.symmetric(vertical: 15),
+                  alignment: Alignment.center,
+                  child: const Text("5초 추가"),
+                ),
+              ),
+              GestureDetector(
+                onTap: addHistory,
+                child: Container(
+                  width: 180,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 2,
                     ),
-                    padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.symmetric(vertical: 15),
-                    alignment: Alignment.center,
-                    child: const Text("기록하기"),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [const Text("전체 횟수 : "), Text('$totalCounts')],
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.symmetric(vertical: 15),
+                  alignment: Alignment.center,
+                  child: const Text("기록하기"),
+                ),
+              ),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [const Text("전체 횟수 : "), Text('$totalCounts')],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: Scrollbar(
+              thumbVisibility: true,
+              thickness: 10.0,
+              trackVisibility: true,
+              child: ListView.builder(
+                itemCount: historyList.length,
+                itemBuilder: (context, index) {
+                  return Center(
+                    child: Text(
+                      historyList[index],
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
-                  )
-                ],
+                  );
+                },
               ),
             ),
           )
