@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sample_flutter/models/webtoon_detail_model.dart';
+import 'package:sample_flutter/models/webtoon_episode_model.dart';
+import 'package:sample_flutter/services/api_service.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final String title, thumb, id;
 
   const DetailScreen({
@@ -9,6 +12,27 @@ class DetailScreen extends StatelessWidget {
     required this.thumb,
     required this.id,
   });
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  // 특정 property를 생성할 떄 기존에 사용하던 property로 접근이 불가능함. 아래 소스는 오류 발생.
+  // statelesswidget -> statefulwiget으로 변경
+  //Future<WebtoonDetailModel> webtoon = ApiService.getToonsById(widget.id);
+
+  late Future<WebtoonDetailModel> webtoon;
+  late Future<List<WebtoonEpisodeModel>> episodes;
+
+  // initstate는 build보다 항상 먼저 호출됨!
+  @override
+  void initState() {
+    // initstate에서는 widget.id 접근 가능
+    super.initState();
+    webtoon = ApiService.getToonsById(widget.id);
+    episodes = ApiService.getLatestEpisodesById(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +46,9 @@ class DetailScreen extends StatelessWidget {
           foregroundColor: Colors.green, // 글자색
           title: Center(
             child: Text(
-              title,
+              widget
+                  .title, // statefulwidget으로 변경하면서 class가 분리 되어 있기 때문에 title만으로는 접근 못함.
+              // 따라서 앞에 widget을 붙여줘야함. widget은 부모한테 가라는 의미와 동일함.
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w400,
@@ -37,7 +63,7 @@ class DetailScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Hero(
-                  tag: id,
+                  tag: widget.id,
                   child: Container(
                     width: 250,
                     clipBehavior:
@@ -51,7 +77,7 @@ class DetailScreen extends StatelessWidget {
                             color: Colors.black.withOpacity(0.5),
                           )
                         ]),
-                    child: Image.network(thumb),
+                    child: Image.network(widget.thumb),
                   ),
                 ),
               ],

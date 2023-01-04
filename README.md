@@ -208,3 +208,9 @@ Dart, Flutter 설치
 ### 6.12 ApiService
 
 - url api에 id를 넣어서 상세조회 기능 구현
+
+### 6.13 Futures
+
+- detail 은 다른 방식으로 써야함 futurebuilder가 아닌
+- id 값이 필요하기 때문..
+- stateless -> stateful로 변경하고 initstate를 통해 데이터 받아오기 처리
