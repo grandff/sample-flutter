@@ -214,3 +214,7 @@ Dart, Flutter 설치
 - detail 은 다른 방식으로 써야함 futurebuilder가 아닌
 - id 값이 필요하기 때문..
 - stateless -> stateful로 변경하고 initstate를 통해 데이터 받아오기 처리
+
+### 6.14 Detail Info
+
+- 상세 화면 설정
