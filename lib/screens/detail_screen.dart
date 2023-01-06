@@ -39,60 +39,60 @@ class _DetailScreenState extends State<DetailScreen> {
     // 페이지를 다시 생성하는 것이므로 scaffold를 포함한 구조도 다시 만들어줘야함
     // 사용자 눈에는 페이지 이동처럼 보임
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 2, // 앱바 하단의 음영을 사라지게함. 높을 수록 음영이 진해짐
-          backgroundColor: Colors.white, // 배경색
-          foregroundColor: Colors.green, // 글자색
-          title: Center(
-            child: Text(
-              widget
-                  .title, // statefulwidget으로 변경하면서 class가 분리 되어 있기 때문에 title만으로는 접근 못함.
-              // 따라서 앞에 widget을 붙여줘야함. widget은 부모한테 가라는 의미와 동일함.
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w400,
-              ),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 2, // 앱바 하단의 음영을 사라지게함. 높을 수록 음영이 진해짐
+        backgroundColor: Colors.white, // 배경색
+        foregroundColor: Colors.green, // 글자색
+        title: Center(
+          child: Text(
+            widget
+                .title, // statefulwidget으로 변경하면서 class가 분리 되어 있기 때문에 title만으로는 접근 못함.
+            // 따라서 앞에 widget을 붙여줘야함. widget은 부모한테 가라는 의미와 동일함.
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w400,
             ),
           ),
         ),
-        body: Column(
-          children: [
-            const SizedBox(height: 50),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Hero(
-                  tag: widget.id,
-                  child: Container(
-                    width: 250,
-                    clipBehavior:
-                        Clip.hardEdge, // border radius 적용을 위해 clip behavior 적용
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 15,
-                            offset: const Offset(10, 10),
-                            color: Colors.black.withOpacity(0.5),
-                          )
-                        ]),
-                    child: Image.network(widget.thumb),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(50),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Hero(
+                    tag: widget.id,
+                    child: Container(
+                      width: 250,
+                      clipBehavior: Clip
+                          .hardEdge, // border radius 적용을 위해 clip behavior 적용
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 15,
+                              offset: const Offset(10, 10),
+                              color: Colors.black.withOpacity(0.5),
+                            )
+                          ]),
+                      child: Image.network(widget.thumb),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            FutureBuilder(
-              // future builder를 통해 webtoon 정보 받아오기
-              future: webtoon,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    child: Column(
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              FutureBuilder(
+                // future builder를 통해 webtoon 정보 받아오기
+                future: webtoon,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -111,14 +111,62 @@ class _DetailScreenState extends State<DetailScreen> {
                           ),
                         )
                       ],
-                    ),
-                  );
-                }
+                    );
+                  }
 
-                return const Text("...");
-              },
-            ),
-          ],
-        ));
+                  return const Text("...");
+                },
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              FutureBuilder(
+                future: episodes,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
+                      children: [
+                        for (var episode in snapshot.data!)
+                          Container(
+                            margin: const EdgeInsets.only(
+                                bottom: 10), // 하단에만 margin 부여
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.green.shade400,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 20,
+                                horizontal: 40,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    episode.title,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 16),
+                                  ),
+                                  const Icon(
+                                    Icons.chevron_right_rounded,
+                                    color: Colors.white,
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                      ],
+                    );
+                  }
+
+                  return const Text("...");
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

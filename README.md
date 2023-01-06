@@ -218,3 +218,10 @@ Dart, Flutter 설치
 ### 6.14 Detail Info
 
 - 상세 화면 설정
+
+### 6.15 Episodes
+
+- 특정 데이터에 의존해서 데이터를 받아오는 경우 statefulwidget으로 사용
+- 그게 아니라면 statelesswidget으로도 가능
+- home_screen의 경우에는 stateless, detail은 stateful로 한 이유
+- episodes를 보여주는 공간 생성
