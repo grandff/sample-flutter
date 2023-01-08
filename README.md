@@ -225,3 +225,13 @@ Dart, Flutter 설치
 - 그게 아니라면 statelesswidget으로도 가능
 - home_screen의 경우에는 stateless, detail은 stateful로 한 이유
 - episodes를 보여주는 공간 생성
+
+### 6.16 Url Launcher
+
+- flutter 에서 브라우저를 열거임
+- url_launcher 설치하기
+  
+> flutter pub add url_launcher
+
+- 설정을 몇가지 더해줘야함. ios하고 andorid에 따라 달라짐
+- 설정을 하고 flutter를 아예 다시 시작해야함

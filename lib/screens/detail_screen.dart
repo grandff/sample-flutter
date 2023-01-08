@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sample_flutter/models/webtoon_detail_model.dart';
 import 'package:sample_flutter/models/webtoon_episode_model.dart';
 import 'package:sample_flutter/services/api_service.dart';
+import 'package:sample_flutter/widgets/episode_widget.dart';
 
 class DetailScreen extends StatefulWidget {
   final String title, thumb, id;
@@ -127,35 +128,8 @@ class _DetailScreenState extends State<DetailScreen> {
                     return Column(
                       children: [
                         for (var episode in snapshot.data!)
-                          Container(
-                            margin: const EdgeInsets.only(
-                                bottom: 10), // 하단에만 margin 부여
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.green.shade400,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 20,
-                                horizontal: 40,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    episode.title,
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 16),
-                                  ),
-                                  const Icon(
-                                    Icons.chevron_right_rounded,
-                                    color: Colors.white,
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
+                          // id 값도 같이 넘겨줌
+                          Episode(episode: episode, webtoonId: widget.id)
                       ],
                     );
                   }
