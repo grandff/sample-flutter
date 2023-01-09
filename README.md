@@ -16,6 +16,12 @@ Dart, Flutter 설치
   > <https://www.behance.net/gallery/153414411/Timer>
   > <https://dribbble.com/shots/12024270-Countdown-Timer-DailyUI014>
 [ ] 공공데이터 API로 데이터 fetch 연습
+  > 날씨 데이터 활용
+  > 전국 날씨 조회
+  > 날씨 조회 상세보기 클릭 시 상세데이터 조회
+  > 폰트 바꾸기
+  > 하단바 추가해보기
+  > 그리고 뭔가 하나더...
 
 ## References
 
@@ -235,3 +241,12 @@ Dart, Flutter 설치
 
 - 설정을 몇가지 더해줘야함. ios하고 andorid에 따라 달라짐
 - 설정을 하고 flutter를 아예 다시 시작해야함
+
+### 6.17 Favorites
+
+- favoirte 기능 추가
+- shared_preferences 패키지 설치
+
+> flutter pub add shared_preferences
+
+- 핸드폰 저장소에 데이터를 저장하기 위해 사용

@@ -3,6 +3,7 @@ import 'package:sample_flutter/models/webtoon_detail_model.dart';
 import 'package:sample_flutter/models/webtoon_episode_model.dart';
 import 'package:sample_flutter/services/api_service.dart';
 import 'package:sample_flutter/widgets/episode_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailScreen extends StatefulWidget {
   final String title, thumb, id;
@@ -25,6 +26,24 @@ class _DetailScreenState extends State<DetailScreen> {
 
   late Future<WebtoonDetailModel> webtoon;
   late Future<List<WebtoonEpisodeModel>> episodes;
+  late SharedPreferences prefs; // 디바이스 저장소 기능 활용
+  bool isLiked = false; // 좋아요 여부
+
+  Future initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    final likedToons = prefs.getStringList('likedToons');
+    if (likedToons != null) {
+      // likedToons 안에 해당 웹툰의 좋아요가 있는지 없는지 확인
+      if (likedToons.contains(widget.id) == true) {
+        setState(() {
+          isLiked = true;
+        });
+      }
+    } else {
+      // likedToons 정보가 없다면 디바이스에 새로 생성
+      await prefs.setStringList("likedToons", []);
+    }
+  }
 
   // initstate는 build보다 항상 먼저 호출됨!
   @override
@@ -33,6 +52,26 @@ class _DetailScreenState extends State<DetailScreen> {
     super.initState();
     webtoon = ApiService.getToonsById(widget.id);
     episodes = ApiService.getLatestEpisodesById(widget.id);
+    initPrefs();
+  }
+
+  // 좋아요 클릭
+  onHeartTap() async {
+    final likedToons = prefs.getStringList('likedToons');
+    if (likedToons != null) {
+      // 해당 웹툰의 아이디가 등록되어있으면 삭제, 아니면 등록처리
+      if (isLiked) {
+        likedToons.remove(widget.id);
+      } else {
+        likedToons.add(widget.id);
+      }
+
+      // 디바이스에 저장
+      await prefs.setStringList('likedToons', likedToons);
+      setState(() {
+        isLiked = !isLiked;
+      });
+    }
   }
 
   @override
@@ -45,6 +84,14 @@ class _DetailScreenState extends State<DetailScreen> {
         elevation: 2, // 앱바 하단의 음영을 사라지게함. 높을 수록 음영이 진해짐
         backgroundColor: Colors.white, // 배경색
         foregroundColor: Colors.green, // 글자색
+        actions: [
+          IconButton(
+            onPressed: onHeartTap,
+            icon: Icon(
+              isLiked ? Icons.favorite : Icons.favorite_outline_outlined,
+            ),
+          )
+        ],
         title: Center(
           child: Text(
             widget
