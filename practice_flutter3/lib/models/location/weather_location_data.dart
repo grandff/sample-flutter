@@ -1,4 +1,8 @@
 class WeatherLocationData {
+  // enum 형태 ???
+  //final Map<String, int, int> locationList;
+
+  //WeatherLocationData({required this.locationList});
   /*
   서울특별시			60	127
 부산광역시			98	76

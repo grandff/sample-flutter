@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:practice_flutter3/models/weather_model.dart';
 import 'package:practice_flutter3/services/weather_service.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   // 오늘의 날씨 목록 조회
-  final Future<List<WeatherModel>> weathers = WeatherService.getTodayWeathers();
+  final Future<String> weathers = WeatherService.getTodayWeathers();
 
   @override
   Widget build(BuildContext context) {
