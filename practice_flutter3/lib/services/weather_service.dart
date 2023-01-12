@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:practice_flutter3/models/getVilageFcst/fcst_model.dart';
+import 'package:practice_flutter3/models/getVilageFcst/fcst_request_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:practice_flutter3/utility/get_today.dart';
 
 class WeatherService {
   // 날씨 요청 API (단기예보조회)
@@ -18,39 +19,32 @@ class WeatherService {
   static Future<String> getTodayWeathers() async {
     List<FcstItemModel> weatherInstances = [];
 
+    // 전체 시/도별로 날씨를 가져온다
+    // 날짜는 오늘날짜
+    // 시간은 단기예보에 맞게 설정하기
+    var today = DateUtility().getToday();
+    var todayHour = DateUtility().getTimeForFcst();
+    print("gogo : $today, $todayHour");
+
+    // enum 요소 길이 만큼 루프 가능? 그게 아니면 그냥 직접 지정해서 돌리기
+
     // 날씨 api call
     final url = Uri.parse(
-        '$baseUrl?serviceKey=$apiKey&numOfRows=50&pageNo=1&dataType=JSON&base_date=20230111&base_time=0500&nx=60&ny=127');
+        '$baseUrl?serviceKey=$apiKey&numOfRows=50&pageNo=1&dataType=JSON&base_date=20230112&base_time=0500&nx=60&ny=127');
     print(url);
     final response = await http.get(url);
-    print(response.statusCode);
     print(response.body);
     if (response.statusCode == 200) {
       final fullData = jsonDecode(response.body);
       final parsingData = FcstModel.fromJson(fullData);
+      final FcstItemsModel weatherList = parsingData.response.body.items;
+      for (var weather in weatherList.item) {
+        // baseDate":"20230112","baseTime":"0500","category":"UUU","fcstDate":"20230112","fcstTime":"0600","fcstValue":"-1.2","nx":60,"ny":127
 
-      FcstItemsModel test = parsingData.response.body.items;
-      print(test.item.length);
-      for (var weather in test.item) {
+        var temp = <String, dynamic>{};
         print(weather.baseDate);
       }
-
-      //final List<FcstItemsModel> weathersList =
-      //  parsingData.response.body.items as List<FcstItemsModel>;
-
-      //for (var weather in weathersList) {
-      // print(weather);
-      //weatherInstances.add(instance);
-      //}
-
-      //for (var weather in weathers) {
-      //final instance = WeatherModel.fromJson(weather);
-//        print(weather);
-      //      weatherInstances.add(instance);
-      //print(instance);
-      //  }
     }
-    //return "hi";
 
     return "hi";
     //throw Error();
