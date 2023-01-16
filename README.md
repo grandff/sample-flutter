@@ -16,6 +16,7 @@ Dart, Flutter 설치
   > <https://www.behance.net/gallery/153414411/Timer>
   > <https://dribbble.com/shots/12024270-Countdown-Timer-DailyUI014>
 [ ] 공공데이터 API로 데이터 fetch 연습
+  > 현재 내 위치정보 가져오기(geolocator)
   > 날씨 데이터 활용
   > 전국 날씨 조회
   > 날씨 조회 상세보기 클릭 시 상세데이터 조회

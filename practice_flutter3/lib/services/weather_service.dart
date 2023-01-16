@@ -30,7 +30,7 @@ class WeatherService {
 
     // 날씨 api call
     final url = Uri.parse(
-        '$baseUrl?serviceKey=$apiKey&numOfRows=50&pageNo=1&dataType=JSON&base_date=20230112&base_time=0500&nx=60&ny=127');
+        '$baseUrl?serviceKey=$apiKey&numOfRows=50&pageNo=1&dataType=JSON&base_date=$today&base_time=0500&nx=60&ny=127');
     print(url);
     final response = await http.get(url);
     print(response.body);
