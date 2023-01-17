@@ -1,21 +1,12 @@
 class RegionFullModel {
-  final RegionMetaModel meta;
-  final RegionDocumentModel documents;
-
-  RegionFullModel.fromJson(Map<String, dynamic> json)
-      : meta = json['meta'],
-        documents = json['documents'];
-}
-
-class RegionDocumentModel {
   final List<RegionCodeModel> documents;
-  RegionDocumentModel({required this.documents});
+  RegionFullModel({required this.documents});
 
-  factory RegionDocumentModel.fromJson(Map<String, dynamic> json) {
-    var list = json as List;
+  factory RegionFullModel.fromJson(Map<String, dynamic> json) {
+    var list = json['documents'] as List;
     List<RegionCodeModel> itemList =
         list.map((e) => RegionCodeModel.fromJson(e)).toList();
-    return RegionDocumentModel(documents: itemList);
+    return RegionFullModel(documents: itemList);
   }
 }
 
@@ -39,11 +30,4 @@ class RegionCodeModel {
         code = json['code'],
         x = json['x'],
         y = json['y'];
-}
-
-class RegionMetaModel {
-  final num totalCount;
-
-  RegionMetaModel.fromJson(Map<String, dynamic> json)
-      : totalCount = json['total_count'];
 }

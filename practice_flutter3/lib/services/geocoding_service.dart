@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:practice_flutter3/models/location/geocoding_model.dart';
 
 class GeocodingService {
   final latitude;
@@ -11,22 +13,29 @@ class GeocodingService {
 
   // kakao rest api key
   static var kakaoKey = dotenv.env['KAKAO_KEY'];
-
   // kakao api url
   static var kakaoBaseUrl = dotenv.env['KAKAO_GEO_URL'];
-  //"https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=127.1086228&y=37.4012191"
 
-  /*
-  curl -v -X GET "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=127.1086228&y=37.4012191" \
-  -H "Authorization: KakaoAK ${REST_API_KEY}"
-  */
-
-  static Future<String> coord2region(latitude, longitude) async {
-    print("latitude : $latitude, longitude : $longitude");
-    final url = Uri.parse('$kakaoBaseUrl?x=$latitude&y=$longitude');
+  static Future<RegionCodeModel> coord2region(latitude, longitude) async {
+    final url = Uri.parse('$kakaoBaseUrl?x=$longitude&y=$latitude');
     final response = await http.get(url,
         headers: {HttpHeaders.authorizationHeader: "KakaoAK $kakaoKey"});
-    print(response.body);
-    return "hi";
+    late RegionCodeModel resultData;
+
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      final parsingData = RegionFullModel.fromJson(jsonData);
+
+      for (var region in parsingData.documents) {
+        // 법정동일 경우에만 데이터 추출
+        if (region.regionType == "B") {
+          resultData = region;
+        }
+      }
+
+      return resultData;
+    }
+
+    throw Error();
   }
 }
