@@ -17,19 +17,19 @@ Dart, Flutter 설치
   > <https://dribbble.com/shots/12024270-Countdown-Timer-DailyUI014>
 [ ] 공공데이터 API로 데이터 fetch 연습
   > 현재 내 위치정보 가져오기(geolocator)
-  > 날씨 데이터 활용
-  > 전국 날씨 조회
+  > 내 위치 정보를 지역으로 변경(kakao)
+  > 날씨 데이터 활용  
   > 날씨 조회 상세보기 클릭 시 상세데이터 조회
   > 폰트 바꾸기
-  > 하단바 추가해보기
-  > 그리고 뭔가 하나더...
+  > 하단바 추가해보기  
   > <https://dribbble.com/shots/15208692-Weather-App>
 
 ## References
 
-[명명 규칙]<https://dart.dev/tools/pub/pubspec#name> </br>
+[명명 규칙](https://dart.dev/tools/pub/pubspec#name) </br>
 [빌드에러대응]<https://hijigoo.github.io/flutter/2021/05/05/error-tip-01/>
 [ListView]<https://dalgonakit.tistory.com/104> </br>
+[dotenv 적용](https://velog.io/@marksen/Flutter-.env-%ED%8C%8C%EC%9D%BC-%EC%A0%81%EC%9A%A9)
 
 ## 강의내용 정리
 

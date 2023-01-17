@@ -58,49 +58,38 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        title: const Center(
-          child: Text("The Weather's Time"),
-        ),
-      ),
+          elevation: 0,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          title: FutureBuilder(
+            future: nowAddress,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Center(
+                  child: Text(
+                    snapshot.data!.addressName,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'SpoqaSans',
+                    ),
+                  ),
+                );
+              }
+
+              return const Center(child: CircularProgressIndicator());
+            },
+          )),
       body: Column(
         children: [
           Expanded(
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 50,
-                    child: FutureBuilder(
-                      future: nowAddress,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Text(
-                            snapshot.data!.addressName,
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          );
-                        }
-
-                        return const Center(child: CircularProgressIndicator());
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: const Text('위젯'),
-                    ),
-                  ),
-                ],
-              ),
+              child: const Text('위젯'),
             ),
           ),
           Container(
-            height: 150,
+            height: 170,
             decoration: const BoxDecoration(
               color: Colors.red,
             ),
