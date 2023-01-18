@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:practice_flutter3/models/location/geocoding_model.dart';
 import 'package:practice_flutter3/services/geocoding_service.dart';
 import 'package:practice_flutter3/services/geolocator_service.dart';
+import 'package:practice_flutter3/services/weather_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ValueNotifier<num> longitude = ValueNotifier<num>(0);
   late Future<Position> nowLocation; // 현재 위치 정보 불러오기
   late Future<RegionCodeModel> nowAddress; // 현재 주소명
+  late Future<Map<String, dynamic>> nowWeather; // 오늘 날씨
 
   // 메인화면 초기화
   void initAddressName() {
@@ -38,8 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
       longitude.value = 126.789441666667;
     }
 
-    nowAddress = GeocodingService.coord2region(latitude.value, longitude.value);
-    nowAddress.then((value) => print(value.addressName));
+    nowAddress = GeocodingService.coord2region(
+        latitude.value, longitude.value); // 현재 위치 변환
+    nowWeather = WeatherService.getTodayWeathers(
+        latitude.value, longitude.value); // 현재 날씨 정보 조회
   }
 
   @override
@@ -48,9 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     nowLocation = GeolocateService.determinePosition(); // 현재 위치 정보 조회
     initAddressName();
-
-    // 카카오좌표 도전.. 아님말고 어쩌지 ㅅㅂ
-    // 그 정보로 날씨를 가져와야함
   }
 
   @override
@@ -85,7 +86,29 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
-              child: const Text('위젯'),
+              child: FutureBuilder(
+                future: nowWeather,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    var weatherData = snapshot.data!;
+                    return Column(
+                      children: [
+                        Text(weatherData['TMP']),
+                        Text(weatherData['WSD']),
+                        Text(weatherData['SKY']),
+                        Text(weatherData['PTY']),
+                        Text(weatherData['POP']),
+                        Text(weatherData['PCP']),
+                        Text(weatherData['REH']),
+                        Text(weatherData['SNO']),
+                        Text(weatherData['WSD']),
+                      ],
+                    );
+                  }
+
+                  return const Center(child: CircularProgressIndicator());
+                },
+              ),
             ),
           ),
           Container(
