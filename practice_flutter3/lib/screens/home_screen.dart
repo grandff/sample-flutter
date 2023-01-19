@@ -4,6 +4,7 @@ import 'package:practice_flutter3/models/location/geocoding_model.dart';
 import 'package:practice_flutter3/services/geocoding_service.dart';
 import 'package:practice_flutter3/services/geolocator_service.dart';
 import 'package:practice_flutter3/services/weather_service.dart';
+import 'package:practice_flutter3/utility/get_today.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -70,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text(
                     snapshot.data!.addressName,
                     style: const TextStyle(
-                      fontSize: 22,
+                      fontSize: 24,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'SpoqaSans',
                     ),
@@ -91,18 +92,66 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     var weatherData = snapshot.data!;
-                    return Column(
-                      children: [
-                        Text(weatherData['TMP']),
-                        Text(weatherData['WSD']),
-                        Text(weatherData['SKY']),
-                        Text(weatherData['PTY']),
-                        Text(weatherData['POP']),
-                        Text(weatherData['PCP']),
-                        Text(weatherData['REH']),
-                        Text(weatherData['SNO']),
-                        Text(weatherData['WSD']),
-                      ],
+                    return Container(
+                      width: 230,
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 50),
+                      decoration: const BoxDecoration(
+                          /*border: Border.all(
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.amber,*/
+                          /*gradient: const LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Color(0xFFA18CD1),
+                                Color(0xFFFBC2EB),
+                              ]),*/
+                          ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "${DateUtility().getFullToday()} ${DateUtility().getDayOfWeek()}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                  fontFamily: 'SpoqaSans',
+                                ),
+                              ),
+                              Text(
+                                "${weatherData['TMP']}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                  fontFamily: 'SpoqaSans',
+                                ),
+                              ),
+                            ],
+                          ),
+                          Text(weatherData['WSD']),
+                          Text(weatherData['SKY']),
+                          Text(weatherData['PTY']),
+                          Text(weatherData['POP']),
+                          Text(weatherData['PCP']),
+                          Row(
+                            children: const [
+                              Text('바람'),
+                              Text('강수확률'),
+                              Text('습도'),
+                            ],
+                          ),
+                          Text(weatherData['REH']),
+                          Text(weatherData['SNO']),
+                          Text(weatherData['WSD']),
+                        ],
+                      ),
                     );
                   }
 

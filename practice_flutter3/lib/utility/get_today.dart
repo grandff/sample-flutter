@@ -9,6 +9,38 @@ class DateUtility {
     return today;
   }
 
+  // 오늘 요일 리턴
+  String getDayOfWeek() {
+    DateTime now = DateTime.now();
+    DateFormat formatter = DateFormat("EEEE");
+    var ee = formatter.format(now);
+    if (ee == "Monday") {
+      ee = "월요일";
+    } else if (ee == "Tuesday") {
+      ee = "화요일";
+    } else if (ee == "Wednesday") {
+      ee = "수요일";
+    } else if (ee == "Thursday") {
+      ee = "목요일";
+    } else if (ee == "Friday") {
+      ee = "금요일";
+    } else if (ee == "Saturday") {
+      ee = "토요일";
+    } else if (ee == "Sunday") {
+      ee = "일요일";
+    }
+
+    return ee;
+  }
+
+  // 오늘 날짜 풀
+  String getFullToday() {
+    DateTime now = DateTime.now();
+    DateFormat formatter = DateFormat("yyyy.MM.dd");
+    var today = formatter.format(now);
+    return today;
+  }
+
   // 현재 시간 기준으로 단기예보 기준 시간 변경
   String getTimeForFcst() {
     DateTime now = DateTime.now();
