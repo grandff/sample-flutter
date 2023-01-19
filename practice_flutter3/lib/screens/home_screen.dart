@@ -5,6 +5,8 @@ import 'package:practice_flutter3/services/geocoding_service.dart';
 import 'package:practice_flutter3/services/geolocator_service.dart';
 import 'package:practice_flutter3/services/weather_service.dart';
 import 'package:practice_flutter3/utility/get_today.dart';
+import 'package:practice_flutter3/utility/sky_text.dart';
+import 'package:practice_flutter3/widgets/sky_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<Position> nowLocation; // 현재 위치 정보 불러오기
   late Future<RegionCodeModel> nowAddress; // 현재 주소명
   late Future<Map<String, dynamic>> nowWeather; // 오늘 날씨
+  late Future<String> imgFileName;
 
   // 메인화면 초기화
   void initAddressName() {
@@ -45,11 +48,15 @@ class _HomeScreenState extends State<HomeScreen> {
         latitude.value, longitude.value); // 현재 위치 변환
     nowWeather = WeatherService.getTodayWeathers(
         latitude.value, longitude.value); // 현재 날씨 정보 조회
+
+    // 이미지파일 설정
+    nowWeather.then((value) {
+      imgFileName = SkyUtility.changeToImgFileName(value['SKY'], value['PTY']);
+    });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     nowLocation = GeolocateService.determinePosition(); // 현재 위치 정보 조회
     initAddressName();
@@ -135,21 +142,43 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                           ),
+                          FutureBuilder(
+                            future: imgFileName,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return SkyWidget(
+                                  imgFileName: snapshot.data!.toString(),
+                                );
+                              }
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            },
+                          ),
                           Text(weatherData['WSD']),
-                          Text(weatherData['SKY']),
-                          Text(weatherData['PTY']),
                           Text(weatherData['POP']),
-                          Text(weatherData['PCP']),
                           Row(
-                            children: const [
-                              Text('바람'),
-                              Text('강수확률'),
-                              Text('습도'),
+                            children: [
+                              Column(
+                                children: const [
+                                  Text('이미지'),
+                                  Text('바람'),
+                                ],
+                              ),
+                              Column(
+                                children: const [
+                                  Text('이미지'),
+                                  Text('강수확률'),
+                                ],
+                              ),
+                              Column(
+                                children: const [
+                                  Text('이미지'),
+                                  Text('습도'),
+                                ],
+                              ),
                             ],
                           ),
                           Text(weatherData['REH']),
-                          Text(weatherData['SNO']),
-                          Text(weatherData['WSD']),
                         ],
                       ),
                     );

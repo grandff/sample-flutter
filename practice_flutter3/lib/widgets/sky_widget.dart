@@ -1,38 +1,24 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/cupertino.dart';
 
 class SkyWidget extends StatelessWidget {
-  final String sky, pty;
+  final String imgFileName;
 
   const SkyWidget({
     super.key,
-    required this.sky,
-    required this.pty,
+    required this.imgFileName,
   });
-
-  // 하늘상태 확인
-  String checkSkyState(sky, pty) {
-    // pty과 0이 아닐 경우 우선 지정
-    if (pty == "1" || pty == "2" || pty == "4" || pty == "5" || pty == "6") {
-      return "rainy";
-    } else if (pty == "3" || pty == "7") {
-      return "snowy";
-    } else {
-      // 0인 경우 sky에 해당하는 상태 리턴
-      if (sky == "1") {
-        return "sun";
-      } else if (sky == "3") {
-        return "cloudy";
-      } else if (sky == "4") {
-        return "verycloudy";
-      } else {
-        return "sun";
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Image(
+          image: AssetImage("assets/images/$imgFileName.png"),
+          width: 80,
+          height: 80,
+        ),
+      ),
+    );
   }
 }
