@@ -1,16 +1,8 @@
 # practice_flutter3
 
-A new Flutter project.
+## 데이터 정리
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. 오늘 날씨는 초단기실황조회로 변경하기
+2. 내일, 모레 날씨는 단기 실황으로
+3. 오늘 중 시간대별 날씨도 단기 실황으로
+4. 단기 실황 api를 나눠야함

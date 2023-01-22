@@ -3,7 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:practice_flutter3/models/location/geocoding_model.dart';
 import 'package:practice_flutter3/services/geocoding_service.dart';
 import 'package:practice_flutter3/services/geolocator_service.dart';
-import 'package:practice_flutter3/services/weather_service.dart';
+import 'package:practice_flutter3/services/now_weather_service.dart';
 import 'package:practice_flutter3/utility/get_today.dart';
 import 'package:practice_flutter3/utility/sky_text.dart';
 import 'package:practice_flutter3/widgets/sky_widget.dart';
@@ -20,7 +20,13 @@ class _HomeScreenState extends State<HomeScreen> {
   ValueNotifier<num> longitude = ValueNotifier<num>(0);
   late Future<Position> nowLocation; // 현재 위치 정보 불러오기
   late Future<RegionCodeModel> nowAddress; // 현재 주소명
-  late Future<Map<String, dynamic>> nowWeather; // 오늘 날씨
+  late Future<Map<String, dynamic>> todayWeather; // 오늘 날씨
+  /*
+    TODO : 오늘 시간대별 날씨
+    TODO : 내일, 모레 날씨    
+  */
+  late Future<List<Map<String, dynamic>>>
+      nowWeather; // 오늘 날씨가 아니라 내일모레지금까지날씨가 들어갈예정
   late Future<String> imgFileName;
 
   // 메인화면 초기화
@@ -46,11 +52,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
     nowAddress = GeocodingService.coord2region(
         latitude.value, longitude.value); // 현재 위치 변환
-    nowWeather = WeatherService.getTodayWeathers(
-        latitude.value, longitude.value); // 현재 날씨 정보 조회
 
-    // 이미지파일 설정
-    nowWeather.then((value) {
+    todayWeather = NowWeatherService.getTodayWeatherInfo(
+        latitude.value, longitude.value); // 오늘 날씨
+
+    /*nowWeather = WeatherService.getTodayWeathers(
+        latitude.value, longitude.value); // 현재 날씨 정보 조회*/
+
+    // 오늘 날씨 이미지파일 설정
+    todayWeather.then((value) {
+      print("sky : ${value['SKY']}, pty : ${value['PTY']}");
       imgFileName = SkyUtility.changeToImgFileName(value['SKY'], value['PTY']);
     });
   }
@@ -76,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
               if (snapshot.hasData) {
                 return Center(
                   child: Text(
-                    snapshot.data!.addressName,
+                    '${snapshot.data!.region1depthName} ${snapshot.data!.region2depthName}',
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
@@ -95,14 +106,14 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: FutureBuilder(
-                future: nowWeather,
+                future: todayWeather,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     var weatherData = snapshot.data!;
                     return Container(
-                      width: 230,
+                      width: 300,
                       margin: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 50),
+                          horizontal: 10, vertical: 30),
                       decoration: const BoxDecoration(
                           /*border: Border.all(
                           width: 1,
@@ -124,61 +135,64 @@ class _HomeScreenState extends State<HomeScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                "${DateUtility().getFullToday()} ${DateUtility().getDayOfWeek()}",
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                  fontFamily: 'SpoqaSans',
-                                ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${weatherData['T1H']}",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 45,
+                                      fontFamily: 'SpoqaSans',
+                                    ),
+                                  ),
+                                  FutureBuilder(
+                                    future: nowAddress,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Text(
+                                          snapshot.data!.region3depthName,
+                                          style: const TextStyle(
+                                            fontSize: 24,
+                                            fontFamily: 'SpoqaSans',
+                                          ),
+                                        );
+                                      }
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    },
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "${weatherData['TMP']}",
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                  fontFamily: 'SpoqaSans',
-                                ),
+                              FutureBuilder(
+                                future: imgFileName,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return SkyWidget(
+                                      imgFileName: snapshot.data!.toString(),
+                                    );
+                                  }
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                },
                               ),
                             ],
                           ),
-                          FutureBuilder(
-                            future: imgFileName,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return SkyWidget(
-                                  imgFileName: snapshot.data!.toString(),
-                                );
-                              }
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            },
-                          ),
-                          Text(weatherData['WSD']),
-                          Text(weatherData['POP']),
                           Row(
                             children: [
-                              Column(
-                                children: const [
-                                  Text('이미지'),
-                                  Text('바람'),
-                                ],
-                              ),
-                              Column(
-                                children: const [
-                                  Text('이미지'),
-                                  Text('강수확률'),
-                                ],
-                              ),
-                              Column(
-                                children: const [
-                                  Text('이미지'),
-                                  Text('습도'),
-                                ],
+                              Text(
+                                "${DateUtility().getDayOfWeek()},${DateUtility().getNowTime()} ",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'SpoqaSans',
+                                ),
                               ),
                             ],
                           ),
-                          Text(weatherData['REH']),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          WeatherDetailInfo(weatherData: weatherData),
                         ],
                       ),
                     );
@@ -191,6 +205,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Container(
             height: 170,
+            // 내일하고 모레 데이터는 일단 받아올수있음
+            // 그 넘어서 데이터는 중기 데이터를 사용해야할듯함!
             decoration: const BoxDecoration(
               color: Colors.red,
             ),
@@ -200,6 +216,103 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: const BoxDecoration(
               color: Colors.amber,
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class WeatherDetailInfo extends StatelessWidget {
+  const WeatherDetailInfo({
+    Key? key,
+    required this.weatherData,
+  }) : super(key: key);
+
+  final Map<String, dynamic> weatherData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 20,
+        horizontal: 25,
+      ),
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          width: 1,
+          color: Colors.grey.withOpacity(0.3),
+        ),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 5,
+            offset: const Offset(5, 5),
+            color: Colors.grey.withOpacity(0.4),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            children: [
+              const Image(
+                image: AssetImage("assets/images/info/info_wind.png"),
+                width: 30,
+                height: 30,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                weatherData['WSD'],
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'SpoqaSans',
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              const Image(
+                image: AssetImage("assets/images/info/info_pre.png"),
+                width: 30,
+                height: 30,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                (weatherData['RN1'] == "강수없음mm" ? "강수없음" : weatherData['RN1']),
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'SpoqaSans',
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              const Image(
+                image: AssetImage("assets/images/info/info_humi.png"),
+                width: 30,
+                height: 30,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                weatherData['REH'],
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'SpoqaSans',
+                ),
+              ),
+            ],
           ),
         ],
       ),

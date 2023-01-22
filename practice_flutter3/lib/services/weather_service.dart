@@ -1,14 +1,19 @@
 import 'dart:convert';
 
-import 'package:practice_flutter3/models/getVilageFcst/fcst_request_model.dart';
+import 'package:practice_flutter3/models/getVilageFcst/fcst_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:practice_flutter3/utility/get_today.dart';
 
 class WeatherService {
-  final latitude;
-  final longitude;
+  final num latitude;
+  final num longitude;
 
-  WeatherService({required this.latitude, required this.longitude});
+  // 기준시간은 0200 으로 맞춰놓고
+  // 오늘날짜에 해당하는거는 보여줘야함 일단..
+  WeatherService({
+    required this.latitude,
+    required this.longitude,
+  });
 
   // 날씨 요청 API (단기예보조회)
   static const String baseUrl =
@@ -21,8 +26,9 @@ class WeatherService {
       "yXugn7gIb5dEF5jMX1UjuV4qiy%2Bczf9hX3GZhu%2Fp3kxVI9JbMCvBGPHpKVp5QkAOllYDPlfSnSw0CDX7ZGGYsg%3D%3D";
 
   // 오늘 전체 날씨 목록 (지역별로..)
-  static Future<Map<String, dynamic>> getTodayWeathers(
+  static Future<List<Map<String, dynamic>>> getTodayWeathers(
       latitude, longitude) async {
+    List<Map<String, dynamic>> weatherInstancesList = [];
     Map<String, dynamic> weatherInstances = {};
 
     // 전체 시/도별로 날씨를 가져온다
@@ -36,7 +42,7 @@ class WeatherService {
 
     // 날씨 api call
     final url = Uri.parse(
-        '$baseUrl?serviceKey=$apiKey&numOfRows=50&pageNo=1&dataType=JSON&base_date=$today&base_time=$todayHour&nx=$nx&ny=$ny');
+        '$baseUrl?serviceKey=$apiKey&numOfRows=1000&pageNo=1&dataType=JSON&base_date=$today&base_time=$todayHour&nx=$nx&ny=$ny');
     print(url);
     final response = await http.get(url);
     print(response.body);
@@ -44,7 +50,14 @@ class WeatherService {
       final fullData = jsonDecode(response.body);
       final parsingData = FcstModel.fromJson(fullData);
       final FcstItemsModel weatherList = parsingData.response.body.items;
+      String nowDate = "";
       for (var weather in weatherList.item) {
+        // 오늘, 내일, 모레 순으로 리스트에 데이터 저장
+        if (nowDate != weather.fcstDate && nowDate != "") {
+          weatherInstancesList.add(weatherInstances);
+          weatherInstances = {};
+        }
+        nowDate = weather.fcstDate;
         // 카테고리 별로 분리 해서 데이터 저장
         if (weather.category == "TMP") {
           // 기온
@@ -82,8 +95,10 @@ class WeatherService {
           weatherInstances['WSD'] = "${weather.fcstValue}m/s";
         }
       }
-      return weatherInstances;
+
+      return weatherInstancesList;
     }
+
     throw Error();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 class DateUtility {
@@ -15,19 +16,19 @@ class DateUtility {
     DateFormat formatter = DateFormat("EEEE");
     var ee = formatter.format(now);
     if (ee == "Monday") {
-      ee = "월요일";
+      ee = "월";
     } else if (ee == "Tuesday") {
-      ee = "화요일";
+      ee = "화";
     } else if (ee == "Wednesday") {
-      ee = "수요일";
+      ee = "수";
     } else if (ee == "Thursday") {
-      ee = "목요일";
+      ee = "목";
     } else if (ee == "Friday") {
-      ee = "금요일";
+      ee = "금";
     } else if (ee == "Saturday") {
-      ee = "토요일";
+      ee = "토";
     } else if (ee == "Sunday") {
-      ee = "일요일";
+      ee = "일";
     }
 
     return ee;
@@ -74,5 +75,36 @@ class DateUtility {
     }
 
     return todayHour;
+  }
+
+  // 현재 시간 가져옴
+  String getNowTime() {
+    initializeDateFormatting('ko', null); // ?? 이렇게 해도 한국시간으로 설정이 안됨..?
+    DateTime now = DateTime.now();
+    DateTime koreanNow = now.add(const Duration(hours: 9));
+    DateFormat dateFormat = DateFormat('aa hh:mm', 'ko');
+    var nowTime = dateFormat.format(koreanNow);
+    return nowTime;
+  }
+
+  // 현재 시간 기준으로 단기예보 기준 시간 변경
+  String getTimeForNow() {
+    DateTime now = DateTime.now();
+    DateFormat formatter = DateFormat("H");
+
+    // 이거 한국시간으로 어케나옴? 로컬데이터로 하는게 먼가 있어야할듯 ㅅㅂ
+    // 일단 미국시간 기준으로 해놓기
+    var todayHour = formatter.format(now);
+    todayHour = "${int.parse(todayHour) + 9}00";
+    return todayHour;
+  }
+
+  // 현재 시간 가져옴
+  String getTimeForTodayWeather() {
+    DateTime now = DateTime.now();
+    DateTime koreanNow = now.add(const Duration(hours: 9));
+    DateFormat dateFormat = DateFormat('Hm');
+    var nowTime = dateFormat.format(koreanNow).replaceAll(":", "");
+    return nowTime;
   }
 }
