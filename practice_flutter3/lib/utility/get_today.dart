@@ -105,6 +105,61 @@ class DateUtility {
     DateTime koreanNow = now.add(const Duration(hours: 9));
     DateFormat dateFormat = DateFormat('Hm');
     var nowTime = dateFormat.format(koreanNow).replaceAll(":", "");
-    return nowTime;
+    var timeCheck = int.parse(nowTime);
+    late String timeResult;
+
+    if (timeCheck < 2330 && timeCheck >= 2230) {
+      timeResult = "2230";
+    } else if (timeCheck < 30 && timeCheck >= 2330) {
+      timeResult = "2330";
+    } else if (timeCheck < 130 && timeCheck >= 30) {
+      timeResult = "0030";
+    } else if (timeCheck < 230 && timeCheck >= 130) {
+      timeResult = "0130";
+    } else if (timeCheck < 330 && timeCheck >= 230) {
+      timeResult = "0230";
+    } else if (timeCheck < 430 && timeCheck >= 330) {
+      timeResult = "0330";
+    } else if (timeCheck < 530 && timeCheck >= 430) {
+      timeResult = "0430";
+    } else if (timeCheck < 630 && timeCheck >= 530) {
+      timeResult = "0530";
+    } else if (timeCheck < 730 && timeCheck >= 630) {
+      timeResult = "0630";
+    } else if (timeCheck < 830 && timeCheck >= 730) {
+      timeResult = "0730";
+    } else if (timeCheck < 930 && timeCheck >= 830) {
+      timeResult = "0830";
+    } else if (timeCheck < 1030 && timeCheck >= 930) {
+      timeResult = "0930";
+    } else if (timeCheck < 1130 && timeCheck >= 1030) {
+      timeResult = "1030";
+    } else if (timeCheck < 1230 && timeCheck >= 1130) {
+      timeResult = "1130";
+    } else if (timeCheck < 1330 && timeCheck >= 1230) {
+      timeResult = "1230";
+    } else if (timeCheck < 1430 && timeCheck >= 1330) {
+      timeResult = "1330";
+    } else if (timeCheck < 1530 && timeCheck >= 1430) {
+      timeResult = "1430";
+    } else if (timeCheck < 1630 && timeCheck >= 1530) {
+      timeResult = "1530";
+    } else if (timeCheck < 1730 && timeCheck >= 1630) {
+      timeResult = "1630";
+    } else if (timeCheck < 1830 && timeCheck >= 1730) {
+      timeResult = "17030";
+    } else if (timeCheck < 1930 && timeCheck >= 1830) {
+      timeResult = "1830";
+    } else if (timeCheck < 2030 && timeCheck >= 1930) {
+      timeResult = "1930";
+    } else if (timeCheck < 2130 && timeCheck >= 2030) {
+      timeResult = "2030";
+    } else if (timeCheck < 2230 && timeCheck >= 2130) {
+      timeResult = "2130";
+    } else {
+      timeResult = "0030";
+    }
+
+    return timeResult;
   }
 }

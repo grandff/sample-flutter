@@ -4,6 +4,7 @@ import 'package:practice_flutter3/models/location/geocoding_model.dart';
 import 'package:practice_flutter3/services/geocoding_service.dart';
 import 'package:practice_flutter3/services/geolocator_service.dart';
 import 'package:practice_flutter3/services/now_weather_service.dart';
+import 'package:practice_flutter3/services/weather_service.dart';
 import 'package:practice_flutter3/utility/get_today.dart';
 import 'package:practice_flutter3/utility/sky_text.dart';
 import 'package:practice_flutter3/widgets/sky_widget.dart';
@@ -21,12 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<Position> nowLocation; // 현재 위치 정보 불러오기
   late Future<RegionCodeModel> nowAddress; // 현재 주소명
   late Future<Map<String, dynamic>> todayWeather; // 오늘 날씨
-  /*
-    TODO : 오늘 시간대별 날씨
-    TODO : 내일, 모레 날씨    
-  */
   late Future<List<Map<String, dynamic>>>
-      nowWeather; // 오늘 날씨가 아니라 내일모레지금까지날씨가 들어갈예정
+      todayWeatherList; // 오늘 시간대별 날씨 + 내일, 모레 날씨
   late Future<String> imgFileName;
 
   // 메인화면 초기화
@@ -56,12 +53,12 @@ class _HomeScreenState extends State<HomeScreen> {
     todayWeather = NowWeatherService.getTodayWeatherInfo(
         latitude.value, longitude.value); // 오늘 날씨
 
-    /*nowWeather = WeatherService.getTodayWeathers(
-        latitude.value, longitude.value); // 현재 날씨 정보 조회*/
+    todayWeatherList = WeatherService.getTodayWeathers(
+        latitude.value, longitude.value); // 오늘,내일,모레 날씨 정보 조회
+    print("list : ${todayWeatherList.toString()}");
 
     // 오늘 날씨 이미지파일 설정
     todayWeather.then((value) {
-      print("sky : ${value['SKY']}, pty : ${value['PTY']}");
       imgFileName = SkyUtility.changeToImgFileName(value['SKY'], value['PTY']);
     });
   }

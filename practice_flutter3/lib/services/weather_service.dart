@@ -31,33 +31,33 @@ class WeatherService {
     List<Map<String, dynamic>> weatherInstancesList = [];
     Map<String, dynamic> weatherInstances = {};
 
-    // 전체 시/도별로 날씨를 가져온다
     // 날짜는 오늘날짜
-    // 시간은 단기예보에 맞게 설정하기
     var today = DateUtility().getToday();
-    var todayHour = DateUtility().getTimeForFcst();
     // 좌표 소수점 버리기
     var nx = latitude.floor();
     var ny = longitude.floor();
 
     // 날씨 api call
     final url = Uri.parse(
-        '$baseUrl?serviceKey=$apiKey&numOfRows=1000&pageNo=1&dataType=JSON&base_date=$today&base_time=$todayHour&nx=$nx&ny=$ny');
+        '$baseUrl?serviceKey=$apiKey&numOfRows=1000&pageNo=1&dataType=JSON&base_date=$today&base_time=0200&nx=$nx&ny=$ny');
     print(url);
     final response = await http.get(url);
-    print(response.body);
     if (response.statusCode == 200) {
       final fullData = jsonDecode(response.body);
       final parsingData = FcstModel.fromJson(fullData);
       final FcstItemsModel weatherList = parsingData.response.body.items;
       String nowDate = "";
+      String nowTime = "";
       for (var weather in weatherList.item) {
         // 오늘, 내일, 모레 순으로 리스트에 데이터 저장
-        if (nowDate != weather.fcstDate && nowDate != "") {
+        if ((nowDate != weather.fcstDate && nowDate != "") ||
+            (nowTime != weather.fcstTime && nowTime != "")) {
           weatherInstancesList.add(weatherInstances);
           weatherInstances = {};
         }
         nowDate = weather.fcstDate;
+        nowTime = weather.fcstTime;
+
         // 카테고리 별로 분리 해서 데이터 저장
         if (weather.category == "TMP") {
           // 기온
