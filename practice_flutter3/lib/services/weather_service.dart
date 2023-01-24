@@ -46,17 +46,20 @@ class WeatherService {
       final fullData = jsonDecode(response.body);
       final parsingData = FcstModel.fromJson(fullData);
       final FcstItemsModel weatherList = parsingData.response.body.items;
-      String nowDate = "";
       String nowTime = "";
       for (var weather in weatherList.item) {
+        // 오늘 기준 날씨만 가져오기
+        if (today != weather.fcstDate) continue;
+
         // 오늘, 내일, 모레 순으로 리스트에 데이터 저장
-        if ((nowDate != weather.fcstDate && nowDate != "") ||
-            (nowTime != weather.fcstTime && nowTime != "")) {
+        if (nowTime != weather.fcstTime && nowTime != "") {
           weatherInstancesList.add(weatherInstances);
           weatherInstances = {};
         }
-        nowDate = weather.fcstDate;
+
         nowTime = weather.fcstTime;
+        weatherInstances['DATE'] = weather.fcstDate;
+        weatherInstances['TIME'] = weather.fcstTime;
 
         // 카테고리 별로 분리 해서 데이터 저장
         if (weather.category == "TMP") {
@@ -93,6 +96,12 @@ class WeatherService {
         } else if (weather.category == "WSD") {
           // 풍속
           weatherInstances['WSD'] = "${weather.fcstValue}m/s";
+        } else if (weather.category == "TMN") {
+          // 최저기온
+          weatherInstances['TMN'] = "${weather.fcstValue}℃";
+        } else if (weather.category == "TMX") {
+          // 최고기온
+          weatherInstances['TMX'] = "${weather.fcstValue}℃";
         }
       }
 

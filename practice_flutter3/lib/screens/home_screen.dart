@@ -55,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     todayWeatherList = WeatherService.getTodayWeathers(
         latitude.value, longitude.value); // 오늘,내일,모레 날씨 정보 조회
-    print("list : ${todayWeatherList.toString()}");
 
     // 오늘 날씨 이미지파일 설정
     todayWeather.then((value) {
@@ -97,11 +96,11 @@ class _HomeScreenState extends State<HomeScreen> {
               return const Center(child: CircularProgressIndicator());
             },
           )),
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          children: [
+            Expanded(
               child: FutureBuilder(
                 future: todayWeather,
                 builder: (context, snapshot) {
@@ -167,6 +166,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   if (snapshot.hasData) {
                                     return SkyWidget(
                                       imgFileName: snapshot.data!.toString(),
+                                      widthVal: 80,
+                                      heightVal: 80,
                                     );
                                   }
                                   return const Center(
@@ -195,26 +196,117 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }
 
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 },
               ),
             ),
-          ),
-          Container(
-            height: 170,
-            // 내일하고 모레 데이터는 일단 받아올수있음
-            // 그 넘어서 데이터는 중기 데이터를 사용해야할듯함!
-            decoration: const BoxDecoration(
-              color: Colors.red,
+            SizedBox(
+              height: 180,
+              // 내일하고 모레 데이터는 일단 받아올수있음
+              // 그 넘어서 데이터는 중기 데이터를 사용해야할듯함!
+              child: FutureBuilder(
+                future: todayWeatherList,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 30),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                var weather = snapshot.data![index];
+                                var weatherTime =
+                                    "${weather['TIME'].toString().substring(0, 2)}:${weather['TIME'].toString().substring(2, 4)}";
+                                var imgNameInList =
+                                    SkyUtility.changeToImgFileName(
+                                        weather['SKY'], weather['PTY']);
+                                return Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  width: 70,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey.withOpacity(0.3),
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        weather['TMP'],
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: 'SpoqaSans',
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      FutureBuilder(
+                                        future: imgNameInList,
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            return SkyWidget(
+                                              imgFileName:
+                                                  snapshot.data!.toString(),
+                                              widthVal: 40,
+                                              heightVal: 40,
+                                            );
+                                          }
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        },
+                                      ),
+                                      Text(
+                                        weatherTime,
+                                        style: const TextStyle(
+                                          fontSize: 11,
+                                          fontFamily: 'SpoqaSans',
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                width: 15,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }
+
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
             ),
-          ),
-          Container(
-            height: 150,
-            decoration: const BoxDecoration(
-              color: Colors.amber,
+            Container(
+              height: 120,
+              decoration: const BoxDecoration(
+                color: Colors.amber,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -232,7 +324,7 @@ class WeatherDetailInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        vertical: 20,
+        vertical: 15,
         horizontal: 25,
       ),
       clipBehavior: Clip.hardEdge,
@@ -271,6 +363,17 @@ class WeatherDetailInfo extends StatelessWidget {
                   fontFamily: 'SpoqaSans',
                 ),
               ),
+              const SizedBox(
+                height: 5,
+              ),
+              const Text(
+                "풍속",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: 'SpoqaSans',
+                  color: Colors.grey,
+                ),
+              ),
             ],
           ),
           Column(
@@ -290,6 +393,17 @@ class WeatherDetailInfo extends StatelessWidget {
                   fontFamily: 'SpoqaSans',
                 ),
               ),
+              const SizedBox(
+                height: 5,
+              ),
+              const Text(
+                "강수량",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: 'SpoqaSans',
+                  color: Colors.grey,
+                ),
+              ),
             ],
           ),
           Column(
@@ -307,6 +421,17 @@ class WeatherDetailInfo extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 14,
                   fontFamily: 'SpoqaSans',
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              const Text(
+                "습도",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: 'SpoqaSans',
+                  color: Colors.grey,
                 ),
               ),
             ],
