@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:practice_flutter3/models/location/geocoding_model.dart';
-import 'package:practice_flutter3/services/air_service.dart';
 import 'package:practice_flutter3/services/geocoding_service.dart';
 import 'package:practice_flutter3/services/geolocator_service.dart';
 import 'package:practice_flutter3/services/now_weather_service.dart';
@@ -26,7 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Map<String, dynamic>>>
       todayWeatherList; // 오늘 시간대별 날씨 + 내일, 모레 날씨
   late Future<String> imgFileName;
-  late Future<String> nowAirCondition; // 대기질상태
 
   // 메인화면 초기화
   void initAddressName() {
@@ -57,14 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     todayWeatherList = WeatherService.getTodayWeathers(
         latitude.value, longitude.value); // 오늘,내일,모레 날씨 정보 조회
-
-    // 현재 행정구역 확인을 위해서 데이터 같이 보내기
-    nowAddress.then((value) {
-      print(value.region1depthName);
-      // 카카오에서 리턴한 시도 정보를 대기정보 API에서 호출해야하는 방식대로 수정
-
-      nowAirCondition = AirService.getAirMesure("전남", value.region3depthName);
-    });
 
     // 오늘 날씨 이미지파일 설정
     todayWeather.then((value) {
@@ -195,6 +185,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
+            ),
+            const SizedBox(
+              height: 110,
+              //decoration: const BoxDecoration(),
+              child: Text('sibung'),
             ),
             SizedBox(
               height: 40,
@@ -349,12 +344,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: CircularProgressIndicator(),
                   );
                 },
-              ),
-            ),
-            Container(
-              height: 110,
-              decoration: const BoxDecoration(
-                color: Colors.amber,
               ),
             ),
           ],
