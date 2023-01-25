@@ -162,4 +162,13 @@ class DateUtility {
 
     return timeResult;
   }
+
+  // 시간영역체크
+  bool checkNowTimeFlag(String timeListVal) {
+    DateTime now = DateTime.now();
+    DateTime koreanNow = now.add(const Duration(hours: 9));
+    DateFormat dateFormat = DateFormat('HH');
+    var nowTime = dateFormat.format(koreanNow);
+    return (timeListVal == nowTime);
+  }
 }

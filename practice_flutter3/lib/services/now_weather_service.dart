@@ -40,7 +40,6 @@ class NowWeatherService {
     // 날씨 api call
     final url = Uri.parse(
         '$baseUrl?serviceKey=$apiKey&numOfRows=1000&pageNo=1&dataType=JSON&base_date=$today&base_time=$todayHour&nx=$nx&ny=$ny');
-    print(url);
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final fullData = jsonDecode(response.body);

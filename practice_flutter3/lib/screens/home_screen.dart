@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:practice_flutter3/models/location/geocoding_model.dart';
+import 'package:practice_flutter3/services/air_service.dart';
 import 'package:practice_flutter3/services/geocoding_service.dart';
 import 'package:practice_flutter3/services/geolocator_service.dart';
 import 'package:practice_flutter3/services/now_weather_service.dart';
@@ -25,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Map<String, dynamic>>>
       todayWeatherList; // 오늘 시간대별 날씨 + 내일, 모레 날씨
   late Future<String> imgFileName;
+  late Future<String> nowAirCondition; // 대기질상태
 
   // 메인화면 초기화
   void initAddressName() {
@@ -55,6 +57,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     todayWeatherList = WeatherService.getTodayWeathers(
         latitude.value, longitude.value); // 오늘,내일,모레 날씨 정보 조회
+
+    // 현재 행정구역 확인을 위해서 데이터 같이 보내기
+    nowAddress.then((value) {
+      print(value.region1depthName);
+      // 카카오에서 리턴한 시도 정보를 대기정보 API에서 호출해야하는 방식대로 수정
+
+      nowAirCondition = AirService.getAirMesure("전남", value.region3depthName);
+    });
 
     // 오늘 날씨 이미지파일 설정
     todayWeather.then((value) {
@@ -97,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           )),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 5),
         child: Column(
           children: [
             Expanded(
@@ -106,24 +116,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     var weatherData = snapshot.data!;
-                    return Container(
+                    return SizedBox(
                       width: 300,
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 30),
-                      decoration: const BoxDecoration(
-                          /*border: Border.all(
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(50),
-                        color: Colors.amber,*/
-                          /*gradient: const LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Color(0xFFA18CD1),
-                                Color(0xFFFBC2EB),
-                              ]),*/
-                          ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,7 +197,47 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(
-              height: 180,
+              height: 40,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      '오늘의 날씨',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'SpoqaSans',
+                        fontSize: 17,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '다음주 날씨',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'SpoqaSans',
+                              color: Colors.purple.shade600,
+                            ),
+                          ),
+                          Icon(
+                            Icons.chevron_right_rounded,
+                            color: Colors.purple.shade600,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 160,
               // 내일하고 모레 데이터는 일단 받아올수있음
               // 그 넘어서 데이터는 중기 데이터를 사용해야할듯함!
               child: FutureBuilder(
@@ -212,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (snapshot.hasData) {
                     return Container(
                       margin: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 30),
+                          horizontal: 10, vertical: 20),
                       child: Column(
                         children: [
                           Expanded(
@@ -223,6 +257,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 var weather = snapshot.data![index];
                                 var weatherTime =
                                     "${weather['TIME'].toString().substring(0, 2)}:${weather['TIME'].toString().substring(2, 4)}";
+                                var nowTimeAreaCheck = DateUtility()
+                                    .checkNowTimeFlag(weather['TIME']
+                                        .toString()
+                                        .substring(0, 2));
                                 var imgNameInList =
                                     SkyUtility.changeToImgFileName(
                                         weather['SKY'], weather['PTY']);
@@ -237,6 +275,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: Colors.grey.withOpacity(0.3),
                                     ),
                                     borderRadius: BorderRadius.circular(10),
+                                    gradient: nowTimeAreaCheck
+                                        ? const LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                                Color(0xFFA18CD1),
+                                                Color(0xFFFBC2EB),
+                                              ])
+                                        : null,
                                   ),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -245,10 +292,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       Text(
                                         weather['TMP'],
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 13,
                                           fontFamily: 'SpoqaSans',
                                           fontWeight: FontWeight.w600,
+                                          color: nowTimeAreaCheck
+                                              ? Colors.white
+                                              : Colors.black,
                                         ),
                                       ),
                                       const SizedBox(
@@ -272,10 +322,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       Text(
                                         weatherTime,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 11,
                                           fontFamily: 'SpoqaSans',
-                                          color: Colors.grey,
+                                          color: nowTimeAreaCheck
+                                              ? Colors.white
+                                              : Colors.grey,
                                         ),
                                       ),
                                     ],
@@ -300,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Container(
-              height: 120,
+              height: 110,
               decoration: const BoxDecoration(
                 color: Colors.amber,
               ),
@@ -324,7 +376,7 @@ class WeatherDetailInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        vertical: 15,
+        vertical: 12,
         horizontal: 25,
       ),
       clipBehavior: Clip.hardEdge,
