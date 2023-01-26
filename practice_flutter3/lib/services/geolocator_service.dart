@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 class GeolocateService {
   // 현재 내 위치정보 가져오기
   static Future<Position> determinePosition() async {
+    print("geo service on !!");
     bool serviceEnabled; // 서비스 가능여부
     LocationPermission permission; // 위치정보 사용 권한
 

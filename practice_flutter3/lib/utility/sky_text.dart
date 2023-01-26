@@ -4,6 +4,7 @@ class SkyUtility {
   SkyUtility({required this.sky, required this.pty});
 
   static Future<String> changeToImgFileName(sky, pty) async {
+    print("img file create on!");
     late String result;
     if (pty == "1" || pty == "2" || pty == "4" || pty == "5" || pty == "6") {
       result = "rainy";

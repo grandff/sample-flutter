@@ -28,6 +28,7 @@ class WeatherService {
   // 오늘 전체 날씨 목록 (지역별로..)
   static Future<List<Map<String, dynamic>>> getTodayWeathers(
       latitude, longitude) async {
+    print("weather list on !");
     List<Map<String, dynamic>> weatherInstancesList = [];
     Map<String, dynamic> weatherInstances = {};
 

@@ -17,6 +17,7 @@ class GeocodingService {
   static var kakaoBaseUrl = dotenv.env['KAKAO_GEO_URL'];
 
   static Future<RegionCodeModel> coord2region(latitude, longitude) async {
+    print("coord service on !");
     final url = Uri.parse('$kakaoBaseUrl?x=$longitude&y=$latitude');
     final response = await http.get(url,
         headers: {HttpHeaders.authorizationHeader: "KakaoAK $kakaoKey"});

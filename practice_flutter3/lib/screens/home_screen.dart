@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:practice_flutter3/models/location/geocoding_model.dart';
 import 'package:practice_flutter3/services/geocoding_service.dart';
@@ -19,6 +20,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   ValueNotifier<num> latitude = ValueNotifier<num>(0);
   ValueNotifier<num> longitude = ValueNotifier<num>(0);
+  ValueNotifier<String> dept1Name = ValueNotifier<String>("");
+  ValueNotifier<String> dept2Name = ValueNotifier<String>("");
   late Future<Position> nowLocation; // 현재 위치 정보 불러오기
   late Future<RegionCodeModel> nowAddress; // 현재 주소명
   late Future<Map<String, dynamic>> todayWeather; // 오늘 날씨
@@ -69,33 +72,58 @@ class _HomeScreenState extends State<HomeScreen> {
     initAddressName();
   }
 
+  // 위치 재설정 안내 토스트 메시지
+  void showRelocationToast() {
+    Fluttertoast.showToast(
+      msg: "위치를 재설정합니다.",
+      gravity: ToastGravity.BOTTOM,
+      fontSize: 15,
+      backgroundColor: Colors.white,
+      textColor: Colors.grey,
+      toastLength: Toast.LENGTH_SHORT,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          title: FutureBuilder(
-            future: nowAddress,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Center(
-                  child: Text(
-                    '${snapshot.data!.region1depthName} ${snapshot.data!.region2depthName}',
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'SpoqaSans',
-                    ),
-                  ),
-                );
-              }
-
-              return const Center(child: CircularProgressIndicator());
+        elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        centerTitle: true,
+        title: FutureBuilder(
+          future: nowAddress,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Text(
+                '${snapshot.data!.region1depthName} ${snapshot.data!.region2depthName}',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'SpoqaSans',
+                ),
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // 위치 재설정
+              showRelocationToast();
+              nowLocation = GeolocateService.determinePosition(); // 현재 위치 정보 조회
+              initAddressName();
             },
-          )),
+            icon: const Icon(
+              Icons.my_location_rounded,
+              color: Colors.black,
+            ),
+          )
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: Column(
@@ -185,11 +213,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
-            ),
-            const SizedBox(
-              height: 110,
-              //decoration: const BoxDecoration(),
-              child: Text('sibung'),
             ),
             SizedBox(
               height: 40,

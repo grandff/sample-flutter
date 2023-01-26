@@ -26,6 +26,7 @@ class NowWeatherService {
   // 오늘 날씨
   static Future<Map<String, dynamic>> getTodayWeatherInfo(
       latitude, longitude) async {
+    print("get today service on !!");
     Map<String, dynamic> weatherInstances = {};
 
     // 날짜는 오늘날짜
