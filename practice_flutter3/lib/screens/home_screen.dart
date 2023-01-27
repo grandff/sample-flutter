@@ -27,6 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Map<String, dynamic>>>
       todayWeatherList; // 오늘 시간대별 날씨 + 내일, 모레 날씨
   late Future<String> imgFileName;
+  ValueNotifier<String> region1 = ValueNotifier<String>("");
+  ValueNotifier<String> region2 = ValueNotifier<String>("");
+  ValueNotifier<String> region3 = ValueNotifier<String>("");
 
   // 메인화면 초기화
   void initAddressName() {
@@ -51,6 +54,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     nowAddress = GeocodingService.coord2region(
         latitude.value, longitude.value); // 현재 위치 변환
+    nowAddress.then((value) {
+      region1.value = value.region1depthName;
+      region2.value = value.region2depthName;
+      region3.value = value.region3depthName;
+    });
 
     todayWeather = NowWeatherService.getTodayWeatherInfo(
         latitude.value, longitude.value); // 오늘 날씨
@@ -252,8 +260,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           context,
                           MaterialPageRoute(
                             builder: ((context) => WeekScreen(
-                                latitude: latitude.value,
-                                longitude: longitude.value)),
+                                  latitude: latitude.value,
+                                  longitude: longitude.value,
+                                  region1depthName: region1.value,
+                                  region2depthName: region2.value,
+                                  region3depthName: region3.value,
+                                )),
                           ),
                         );
                       },

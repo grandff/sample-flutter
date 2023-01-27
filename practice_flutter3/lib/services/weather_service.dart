@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:practice_flutter3/models/getVilageFcst/fcst_model.dart';
+import 'package:practice_flutter3/models/weather/fcst_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:practice_flutter3/utility/get_today.dart';
 
@@ -130,7 +130,7 @@ class WeatherService {
 // 날씨 api call
     final url = Uri.parse(
         '$baseUrl?serviceKey=$apiKey&numOfRows=1000&pageNo=1&dataType=JSON&base_date=$today&base_time=$fcstTime&nx=$nx&ny=$ny');
-    print(url);
+
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -195,7 +195,6 @@ class WeatherService {
           nextWeatherInstances['TMX'] = "${weather.fcstValue}℃";
         }
       }
-      print(nextWeatherInstancesList.length);
       return nextWeatherInstancesList;
     }
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:practice_flutter3/models/getVilageFcst/fcst_model.dart';
+import 'package:practice_flutter3/models/weather/fcst_model.dart';
 import 'package:practice_flutter3/utility/get_today.dart';
 import 'package:http/http.dart' as http;
 

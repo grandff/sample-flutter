@@ -205,4 +205,19 @@ class DateUtility {
     var nowTime = dateFormat.format(koreanNow);
     return (timeListVal == nowTime);
   }
+
+  // 중기예보를 위한 시간 반환
+  String getMidFcstTime() {
+    DateTime now = DateTime.now();
+    DateTime koreanNow = now.add(const Duration(hours: 9));
+    var hour = koreanNow.hour;
+    return hour < 18 ? "0600" : "1800";
+  }
+
+  // 현재 시간을 기준으로 am, pm인지
+  String getTimeGubun() {
+    var hour = DateTime.now().add(const Duration(hours: 9)).hour;
+    print(hour);
+    return hour < 12 ? "am" : "pm";
+  }
 }
