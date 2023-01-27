@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:practice_flutter3/models/location/geocoding_model.dart';
+import 'package:practice_flutter3/screens/week_screen.dart';
 import 'package:practice_flutter3/services/geocoding_service.dart';
 import 'package:practice_flutter3/services/geolocator_service.dart';
 import 'package:practice_flutter3/services/now_weather_service.dart';
@@ -20,8 +21,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   ValueNotifier<num> latitude = ValueNotifier<num>(0);
   ValueNotifier<num> longitude = ValueNotifier<num>(0);
-  ValueNotifier<String> dept1Name = ValueNotifier<String>("");
-  ValueNotifier<String> dept2Name = ValueNotifier<String>("");
   late Future<Position> nowLocation; // 현재 위치 정보 불러오기
   late Future<RegionCodeModel> nowAddress; // 현재 주소명
   late Future<Map<String, dynamic>> todayWeather; // 오늘 날씨
@@ -84,6 +83,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void changeToKoreaLocation() {
+    // 한국이 아닌 경우에도 임의값으로 수정 37. 127 범위
+    if (!(longitude.value >= 125 && longitude.value < 128)) {
+      latitude.value = 35.0224527777778;
+      longitude.value = 126.789441666667;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return Text(
                 '${snapshot.data!.region1depthName} ${snapshot.data!.region2depthName}',
                 style: const TextStyle(
-                  fontSize: 24,
+                  fontSize: 20,
                   fontWeight: FontWeight.w600,
                   fontFamily: 'SpoqaSans',
                 ),
@@ -108,6 +115,15 @@ class _HomeScreenState extends State<HomeScreen> {
             }
             return const Center(child: CircularProgressIndicator());
           },
+        ),
+        leading: IconButton(
+          onPressed: () {
+            print('기상특보로 넘어갈 화면임');
+          },
+          icon: const Icon(
+            Icons.notifications_on_outlined,
+            color: Colors.black,
+          ),
         ),
         actions: [
           IconButton(
@@ -230,7 +246,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        changeToKoreaLocation();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: ((context) => WeekScreen(
+                                latitude: latitude.value,
+                                longitude: longitude.value)),
+                          ),
+                        );
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,

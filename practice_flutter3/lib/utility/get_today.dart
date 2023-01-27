@@ -10,6 +10,41 @@ class DateUtility {
     return today;
   }
 
+  // 내일 날짜 리턴
+  String getNextDay() {
+    DateTime now = DateTime.now();
+    DateTime nextDay = now.add(const Duration(days: 1));
+    DateFormat formatter = DateFormat("yyyyMMdd");
+    var next = formatter.format(nextDay);
+    return next;
+  }
+
+  // 원하는 일자 리턴
+  String getDurationDay(int addDays) {
+    DateTime now = DateTime.now();
+    DateTime durationDay = now.add(Duration(days: addDays));
+    DateFormat formatter = DateFormat("yyyyMMdd");
+    var next = formatter.format(durationDay);
+    return next;
+  }
+
+  // 해당 날짜의 요일 리턴
+  String getWeekdayFromString(String date) {
+    date =
+        "${date.substring(0, 4)}-${date.substring(4, 6)}-${date.substring(6, 8)}";
+    DateTime parsedDate = DateFormat("yyyy-MM-dd").parse(date);
+    return DateFormat('EEEE', 'ko_KO').format(parsedDate);
+  }
+
+  // 모레 날짜 리턴
+  String getDayAfter() {
+    DateTime now = DateTime.now();
+    DateTime nextDay = now.add(const Duration(days: 2));
+    DateFormat formatter = DateFormat("yyyyMMdd");
+    var next = formatter.format(nextDay);
+    return next;
+  }
+
   // 오늘 요일 리턴
   String getDayOfWeek() {
     DateTime now = DateTime.now();
@@ -45,12 +80,12 @@ class DateUtility {
   // 현재 시간 기준으로 단기예보 기준 시간 변경
   String getTimeForFcst() {
     DateTime now = DateTime.now();
-    DateFormat formatter = DateFormat("H");
+    DateTime koreanNow = now.add(const Duration(hours: 9));
+    DateFormat formatter = DateFormat("HH");
 
     // 이거 한국시간으로 어케나옴? 로컬데이터로 하는게 먼가 있어야할듯 ㅅㅂ
     // 일단 미국시간 기준으로 해놓기
-    var todayHour = formatter.format(now);
-    todayHour = (int.parse(todayHour) + 9).toString();
+    var todayHour = formatter.format(koreanNow).toString();
 
     //Base_time : 0200, 0500, 0800, 1100, 1400, 1700, 2000, 2300 (1일 8회)
     var checkHour = int.parse(todayHour);
@@ -90,13 +125,12 @@ class DateUtility {
   // 현재 시간 기준으로 단기예보 기준 시간 변경
   String getTimeForNow() {
     DateTime now = DateTime.now();
-    DateFormat formatter = DateFormat("H");
-
+    DateTime koreanNow = now.add(const Duration(hours: 9));
+    DateFormat formatter = DateFormat("HH");
+    var nowTime = formatter.format(koreanNow);
+    return "${nowTime}00";
     // 이거 한국시간으로 어케나옴? 로컬데이터로 하는게 먼가 있어야할듯 ㅅㅂ
     // 일단 미국시간 기준으로 해놓기
-    var todayHour = formatter.format(now);
-    todayHour = "${int.parse(todayHour) + 9}00";
-    return todayHour;
   }
 
   // 현재 시간 가져옴
