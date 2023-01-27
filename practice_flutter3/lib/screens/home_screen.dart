@@ -7,6 +7,7 @@ import 'package:practice_flutter3/services/geocoding_service.dart';
 import 'package:practice_flutter3/services/geolocator_service.dart';
 import 'package:practice_flutter3/services/now_weather_service.dart';
 import 'package:practice_flutter3/services/weather_service.dart';
+import 'package:practice_flutter3/services/wrn_info_service.dart';
 import 'package:practice_flutter3/utility/get_today.dart';
 import 'package:practice_flutter3/utility/sky_text.dart';
 import 'package:practice_flutter3/widgets/sky_widget.dart';
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Map<String, dynamic>>>
       todayWeatherList; // 오늘 시간대별 날씨 + 내일, 모레 날씨
   late Future<String> imgFileName;
+  late Future<Map<String, dynamic>> wrnInfo; // 기상 특보 현황
   ValueNotifier<String> region1 = ValueNotifier<String>("");
   ValueNotifier<String> region2 = ValueNotifier<String>("");
   ValueNotifier<String> region3 = ValueNotifier<String>("");
@@ -77,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     nowLocation = GeolocateService.determinePosition(); // 현재 위치 정보 조회
     initAddressName();
+    wrnInfo = WrnInfoService.getPwnStatus(); // 기상 특보 현황
   }
 
   // 위치 재설정 안내 토스트 메시지
