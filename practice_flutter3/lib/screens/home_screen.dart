@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:practice_flutter3/models/location/geocoding_model.dart';
+import 'package:practice_flutter3/screens/alert_screen.dart';
 import 'package:practice_flutter3/screens/week_screen.dart';
 import 'package:practice_flutter3/services/geocoding_service.dart';
 import 'package:practice_flutter3/services/geolocator_service.dart';
@@ -127,14 +128,83 @@ class _HomeScreenState extends State<HomeScreen> {
             return const Center(child: CircularProgressIndicator());
           },
         ),
-        leading: IconButton(
-          onPressed: () {
-            print('기상특보로 넘어갈 화면임');
+        leading: FutureBuilder(
+          future: wrnInfo,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var wrnData = snapshot.data!;
+              var notiLength = wrnData['t6Length'];
+
+              return Stack(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        // 페이지 이동 시 fade in out 애니메이션 부여
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 300),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                            return AlertScreen(
+                              t6: wrnData['t6'],
+                              t7: wrnData['t6'],
+                              other: wrnData['other'],
+                              tmEf: wrnData['tmEf'],
+                              tmFc: wrnData['tmFc'],
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.notifications_on_outlined,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Positioned(
+                    // 특보현황 갯수 설정
+                    top: 0,
+                    right: 8,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.red,
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 14,
+                        minHeight: 14,
+                      ),
+                      child: Text(
+                        notiLength.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
+
+            return IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.notifications_on_outlined,
+                color: Colors.black,
+              ),
+            );
           },
-          icon: const Icon(
-            Icons.notifications_on_outlined,
-            color: Colors.black,
-          ),
         ),
         actions: [
           IconButton(

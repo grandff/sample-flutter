@@ -24,13 +24,16 @@ class WrnInfoService {
       final parsingData = WrnModel.fromJson(fullData);
       final WrnItemsModel wrnList = parsingData.response.body.items;
       for (var wrn in wrnList.item) {
-        wrnInstances['other'] = wrn.other;
-        wrnInstances['t6'] = wrn.t6;
-        wrnInstances['t7'] = wrn.t7;
-        wrnInstances['tmEf'] = wrn.tmEf;
-        wrnInstances['tmFc'] = wrn.tmFc;
+        wrnInstances['other'] = wrn.other.toString().split("\n"); // 참고사항
+        var t6List = wrn.t6.toString().split("\n"); // 특보발효현황 내용
+        wrnInstances['t6Length'] = t6List.length;
+        wrnInstances['t6'] = t6List;
+        wrnInstances['t7'] = wrn.t7.toString().split("\n"); // 예비특보 발효현황
+        wrnInstances['tmEf'] = wrn.tmEf; // 특보발효현황 시각
+        wrnInstances['tmFc'] = wrn.tmFc; // 발표시각
         wrnInstances['tmSeq'] = wrn.tmSeq;
       }
+
       return wrnInstances;
     }
 

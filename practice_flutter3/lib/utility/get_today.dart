@@ -220,4 +220,13 @@ class DateUtility {
     print(hour);
     return hour < 12 ? "am" : "pm";
   }
+
+  // string으로 날짜포멧으로 변환
+  String changeDateFormat(String date) {
+    String formattedString =
+        '${date.substring(0, 4)}-${date.substring(4, 6)}-${date.substring(6, 8)} ${date.substring(8, 10)}:${date.substring(10, 12)}:00';
+    DateTime dateTime = DateTime.parse(formattedString);
+    formattedString = DateFormat('yyyy년 MM월 dd일 HH시 mm분').format(dateTime);
+    return formattedString;
+  }
 }

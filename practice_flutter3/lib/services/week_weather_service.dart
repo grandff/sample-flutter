@@ -48,7 +48,6 @@ class WeekWeatherService {
     // 중기 기상정보 call
     final url = Uri.parse(
         '$fcstUrl?serviceKey=$apiKey&numOfRows=10&pageNo=1&regId=$regArea&tmFc=$today$fcstTime&dataType=JSON');
-    print(url);
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -78,7 +77,7 @@ class WeekWeatherService {
         fcstInstances['rnSt7Am'] = weather.rnSt7Am;
         fcstInstances['rnSt7Pm'] = weather.rnSt7Pm;
       }
-      print(fcstInstances.toString());
+
       return fcstInstances;
     }
 
@@ -92,7 +91,7 @@ class WeekWeatherService {
     // 중기 기온정보 call
     final url = Uri.parse(
         '$taUrl?serviceKey=$apiKey&numOfRows=10&pageNo=1&regId=$regId&tmFc=$today$fcstTime&dataType=JSON');
-    print(url);
+
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -112,7 +111,7 @@ class WeekWeatherService {
         taInstances['taMin7'] = ta.taMin7;
         taInstances['taMax7'] = ta.taMax7;
       }
-      print(taInstances.toString());
+
       return taInstances;
     }
 
