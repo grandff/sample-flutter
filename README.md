@@ -15,7 +15,7 @@ Dart, Flutter 설치
 [X] 뽀모도로 만든거 연습 해보기 (타이머앱)
   > <https://www.behance.net/gallery/153414411/Timer>
   > <https://dribbble.com/shots/12024270-Countdown-Timer-DailyUI014>
-[ ] 공공데이터 API로 데이터 fetch 연습
+[X] 공공데이터 API로 데이터 fetch 연습
   > 현재 내 위치정보 가져오기(geolocator)
   > 내 위치 정보를 지역으로 변경(kakao)
   > 날씨 데이터 활용  
@@ -27,7 +27,7 @@ Dart, Flutter 설치
 ## References
 
 [명명 규칙](https://dart.dev/tools/pub/pubspec#name) </br>
-[빌드에러대응]<https://hijigoo.github.io/flutter/2021/05/05/error-tip-01/>
+[빌드에러대응]<https://hijigoo.github.io/flutter/2021/05/05/error-tip-01/> </br>
 [ListView]<https://dalgonakit.tistory.com/104> </br>
 [dotenv 적용](https://velog.io/@marksen/Flutter-.env-%ED%8C%8C%EC%9D%BC-%EC%A0%81%EC%9A%A9)
 
