@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:practice_flutter4/features/background_gps/background_screen.dart';
 import 'package:practice_flutter4/features/map/naver_map_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -10,14 +11,6 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0; // 선택 인덱스
-
-  // 화면목록
-  static const List<Widget> _screenList = [
-    NaverMapScreen(),
-    Center(
-      child: Text('coord'),
-    ),
-  ];
 
   // ontap
   void _onTap(int index) {
@@ -37,9 +30,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ),
           Offstage(
             offstage: _selectedIndex != 1,
-            child: const Center(
-              child: Text("coord"),
-            ),
+            child: const BackgroundScreen(),
           ),
         ],
       ),

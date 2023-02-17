@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:practice_flutter4/features/navigation/models/directions5_model.dart';
+import 'package:practice_flutter4/services/directions/naver_driections5_service.dart';
 import 'package:practice_flutter4/services/geolocator_service.dart';
 import 'package:practice_flutter4/services/map_marker_temp_service.dart';
 
@@ -21,6 +23,7 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
   final Completer<NaverMapController> mapControllerComplete = Completer();
   late Future<Position> nowLocation; // 현재 위치 정보 불러오기
   List<Map<String, dynamic>> _markerList = []; // 마커 위치정보
+  late Future<NavigationResponse> _naverDirecitons5Response;
 
   // 마커정보 호출
   Future<void> _loadMakerValues() async {
@@ -28,6 +31,49 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
     setState(() {
       _markerList = markers;
     });
+  }
+
+  // 길찾기 기능 호출
+  Future<void> _findTraFast(
+      double latitude, double longitude, String goalCoords) async {
+    print("fratest start! $latitude $longitude $goalCoords");
+
+    List<String> goalList = goalCoords.split("&");
+    double goalLat = double.parse(goalList[0]);
+    double goalLon = double.parse(goalList[1]);
+
+    _naverDirecitons5Response = NaverDirections5Service.naverDirections5Api(
+        latitude, longitude, goalLat, goalLon);
+
+    // path check
+    _naverDirecitons5Response.then(
+      (value) {
+        if (value.code == 0) {
+          // 네이버에서 응답할 경우 0이 200 응답임
+          List<List<double>> pathList = value.route.traFast[0].path;
+          List<NLatLng> positionList = [];
+          for (var index = 0; index < pathList.length; index++) {
+            // 마커 생성
+            var pathMarker = NLatLng(pathList[index][1], pathList[index][0]);
+            positionList.add(pathMarker);
+          }
+
+          // 길찾기 그리기
+          final nArrowHeadPath = NArrowheadPathOverlay(
+            id: goalCoords,
+            coords: positionList,
+            color: Colors.pink,
+            width: 5,
+            outlineColor: Colors.white,
+            outlineWidth: 1,
+          );
+          _naverMapController.addOverlay(nArrowHeadPath);
+        } else {
+          print("response fail...");
+        }
+      },
+    );
+//    _naverDirecitons5Response.
   }
 
   // bottom sheet call
@@ -72,7 +118,15 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
               Center(
                 child: CupertinoButton(
                     color: Theme.of(context).primaryColor,
-                    onPressed: () {},
+                    onPressed: () async {
+                      final nowPosition = await _naverMapController
+                          .getCameraPosition()
+                          .then((value) => value.target);
+                      print(
+                          "now position : $nowPosition ,${nowPosition.latitude} , ${nowPosition.longitude}");
+                      await _findTraFast(
+                          nowPosition.latitude, nowPosition.longitude, title);
+                    },
                     child: const Text(
                       "길찾기",
                       style: TextStyle(
@@ -91,7 +145,6 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
   void initState() {
     super.initState();
     nowLocation = GeolocatorService.determinePosition(); // 현재 위치
-    //_loadMakerValues(); // marker 정보 초기화
   }
 
   @override
