@@ -10,9 +10,11 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0; // 선택 인덱스
-  final screens = [
-    const NaverMapScreen(),
-    const Center(
+
+  // 화면목록
+  static const List<Widget> _screenList = [
+    NaverMapScreen(),
+    Center(
       child: Text('coord'),
     ),
   ];
@@ -27,7 +29,20 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: screens[_selectedIndex],
+      body: Stack(
+        children: [
+          Offstage(
+            offstage: _selectedIndex != 0,
+            child: const NaverMapScreen(),
+          ),
+          Offstage(
+            offstage: _selectedIndex != 1,
+            child: const Center(
+              child: Text("coord"),
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: _onTap,

@@ -97,10 +97,13 @@ class _NaverMapScreenState extends State<NaverMapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: _naverMapSection(),
+      body: Offstage(
+        offstage: false,
+        child: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: _naverMapSection(),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
