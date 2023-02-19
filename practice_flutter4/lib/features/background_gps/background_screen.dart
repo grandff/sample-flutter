@@ -1,9 +1,13 @@
 import 'dart:async';
-import 'dart:isolate';
 
 import 'package:background_locator_2/background_locator.dart';
-import 'package:background_locator_2/location_dto.dart';
+import 'package:background_locator_2/settings/android_settings.dart';
+import 'package:background_locator_2/settings/ios_settings.dart';
+import 'package:background_locator_2/settings/locator_settings.dart'
+    as background_locator_2;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:practice_flutter4/features/background_gps/services/location_callback_handler.dart';
 
 class BackgroundScreen extends StatefulWidget {
   const BackgroundScreen({super.key});
@@ -13,15 +17,16 @@ class BackgroundScreen extends StatefulWidget {
 }
 
 class _BackgroundScreenState extends State<BackgroundScreen> {
-  ReceivePort port = ReceivePort();
-  String logStr = '';
   bool isRunning = false;
-  late LocationDto lastLocation; // ??
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    initPlatformState(); // background locator 활성화
+    if (isRunning) {
+      // background locator가 실행중일 때 서비스 시작
+      _startLocator();
+    }
   }
 
   @override
@@ -31,7 +36,7 @@ class _BackgroundScreenState extends State<BackgroundScreen> {
 
   // background locator 활성화
   Future<void> initPlatformState() async {
-    print("init..");
+    print("gps tracking ... platform init..");
     await BackgroundLocator.initialize();
     final serviceRunning = await BackgroundLocator.isServiceRunning();
     setState(() {
@@ -39,12 +44,67 @@ class _BackgroundScreenState extends State<BackgroundScreen> {
     });
   }
 
+  // backgground locator 시작
+  Future<void> _startLocator() async {
+    Map<String, dynamic> data = {'countInit': 1}; // custom한 버전은 굳이 필요없을듯?
+    return await BackgroundLocator.registerLocationUpdate(
+      LocationCallbackHandler.callback,
+      initCallback: LocationCallbackHandler.initCallback,
+      initDataCallback: data,
+      disposeCallback: LocationCallbackHandler.disposeCallback,
+      iosSettings: const IOSSettings(
+        accuracy: background_locator_2.LocationAccuracy.NAVIGATION,
+        distanceFilter: 0,
+        stopWithTerminate: true,
+      ),
+      autoStop: false,
+      androidSettings: const AndroidSettings(
+        accuracy: background_locator_2.LocationAccuracy.NAVIGATION,
+        interval: 5,
+        distanceFilter: 0,
+        client: LocationClient.android,
+        androidNotificationSettings: AndroidNotificationSettings(
+          notificationChannelName: "Location tracking",
+          notificationTitle: "Start Location Tracking",
+          notificationMsg: "Track location in background",
+          notificationBigMsg: "Background location is on to keep.",
+          notificationIconColor: Colors.grey,
+          notificationTapCallback: LocationCallbackHandler.notificationCallback,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [Text('hi')],
+        children: [
+          CupertinoButton(
+            color: Colors.blue,
+            onPressed: _startLocator,
+            child: const Text(
+              'Start',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CupertinoButton(
+            color: Colors.black38,
+            child: const Text(
+              'End',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }
